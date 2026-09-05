@@ -1,0 +1,13 @@
+:root {
+    --cds-primary: #0a2540;
+    --cds-secondary: #c5a059;
+    --cds-accent: #2e5b88;
+    --cds-bg: #f8fafc;
+}
+
+body {
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    background-color: var(--cds-bg);
+    color: #334155;
+    min-height: 100vh;
+}
