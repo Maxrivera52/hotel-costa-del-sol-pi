@@ -10,4 +10,52 @@ body {
     background-color: var(--cds-bg);
     color: #334155;
     min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.navbar-brand {
+    font-weight: 700;
+    letter-spacing: 0.5px;
+}
+
+.badge-costa {
+    background-color: var(--cds-secondary);
+    color: #fff;
+    font-weight: 600;
+}
+
+.card-stat {
+    border: none;
+    border-radius: 12px;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.card-stat:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.08) !important;
+}
+
+.stat-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+}
+
+.footer-utp {
+    background-color: #0f172a;
+    color: #94a3b8;
+    font-size: 0.875rem;
+    margin-top: auto;
+}
+
+.table-custom th {
+    background-color: #f1f5f9;
+    color: #1e293b;
+    font-weight: 600;
+    font-size: 0.875rem;
 }
