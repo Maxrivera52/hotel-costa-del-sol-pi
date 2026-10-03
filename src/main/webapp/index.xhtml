@@ -1,0 +1,144 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="jakarta.faces.html"
+                xmlns:f="jakarta.faces.core"
+                xmlns:ui="jakarta.faces.facelets"
+                template="/WEB-INF/templates/layout.xhtml">
+
+    <ui:define name="title">Hotel Costa del Sol - Inicio APF2</ui:define>
+
+    <ui:define name="content">
+        <!-- Hero Header -->
+        <div class="p-4 p-md-5 mb-4 rounded-3 text-white shadow-sm" style="background: linear-gradient(135deg, #0a2540 0%, #1e3a8a 100%);">
+            <div class="container-fluid py-2">
+                <div class="d-flex align-items-center gap-2 mb-2">
+                    <span class="badge bg-warning text-dark px-3 py-1">APF2: Semana 10</span>
+                    <span class="text-light-50">JavaServer Faces (JSF 4.0) + Bootstrap 5 + PostgreSQL</span>
+                </div>
+                <h1 class="display-5 fw-bold">Sistema de GestiÃ³n Hotelera</h1>
+                <p class="col-md-9 fs-5 text-light-emphasis">
+                    Plataforma empresarial para el Hotel Wyndham Costa del Sol Chiclayo. MÃ³dulo de control de inventario, catÃ¡logo dinÃ¡mico de habitaciones y respaldo con Managed Beans.
+                </p>
+                <div class="d-flex gap-2">
+                    <h:link outcome="habitaciones.xhtml" styleClass="btn btn-warning btn-lg fw-semibold px-4">
+                        <i class="bi bi-table me-2"></i> Ver Tabla de Datos JSF
+                    </h:link>
+                    <h:link outcome="login.xhtml" styleClass="btn btn-outline-light btn-lg px-4" rendered="#{!loginBean.autenticado}">
+                        <i class="bi bi-shield-lock me-2"></i> Acceso Administrativo
+                    </h:link>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tarjetas Estadisticas vinculadas al Managed Bean -->
+        <h3 class="fw-bold mb-3 text-dark">
+            <i class="bi bi-speedometer2 text-primary me-2"></i> Estado Operativo del Hotel
+        </h3>
+        
+        <div class="row g-3 mb-4">
+            <div class="col-12 col-sm-6 col-xl-3">
+                <div class="card card-stat shadow-sm border-start border-primary border-4 p-3 bg-white">
+                    <div class="d-flex align-items-center justify-content-between">
+                        <div>
+                            <span class="text-muted text-uppercase fw-semibold small">Total Habitaciones</span>
+                            <h2 class="fw-bold my-1 text-primary">#{habitacionBean.totalHabitaciones}</h2>
+                            <small class="text-muted">Capacidad registrada</small>
+                        </div>
+                        <div class="stat-icon bg-primary bg-opacity-10 text-primary">
+                            <i class="bi bi-door-open-fill"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-12 col-sm-6 col-xl-3">
+                <div class="card card-stat shadow-sm border-start border-success border-4 p-3 bg-white">
+                    <div class="d-flex align-items-center justify-content-between">
+                        <div>
+                            <span class="text-muted text-uppercase fw-semibold small">Disponibles</span>
+                            <h2 class="fw-bold my-1 text-success">#{habitacionBean.disponibles}</h2>
+                            <small class="text-success fw-medium">Listas para check-in</small>
+                        </div>
+                        <div class="stat-icon bg-success bg-opacity-10 text-success">
+                            <i class="bi bi-check-circle-fill"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-12 col-sm-6 col-xl-3">
+                <div class="card card-stat shadow-sm border-start border-danger border-4 p-3 bg-white">
+                    <div class="d-flex align-items-center justify-content-between">
+                        <div>
+                            <span class="text-muted text-uppercase fw-semibold small">Ocupadas</span>
+                            <h2 class="fw-bold my-1 text-danger">#{habitacionBean.ocupadas}</h2>
+                            <small class="text-danger fw-medium">HuÃ©spedes alojados</small>
+                        </div>
+                        <div class="stat-icon bg-danger bg-opacity-10 text-danger">
+                            <i class="bi bi-person-fill-lock"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-12 col-sm-6 col-xl-3">
+                <div class="card card-stat shadow-sm border-start border-warning border-4 p-3 bg-white">
+                    <div class="d-flex align-items-center justify-content-between">
+                        <div>
+                            <span class="text-muted text-uppercase fw-semibold small">Mantenimiento</span>
+                            <h2 class="fw-bold my-1 text-warning">#{habitacionBean.mantenimiento}</h2>
+                            <small class="text-muted">Servicio tÃ©cnico</small>
+                        </div>
+                        <div class="stat-icon bg-warning bg-opacity-10 text-warning">
+                            <i class="bi bi-tools"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- MÃ³dulos de la SoluciÃ³n (Cards Bootstrap) -->
+        <div class="row g-4">
+            <div class="col-md-4">
+                <div class="card h-100 shadow-sm border-0">
+                    <div class="card-body">
+                        <div class="d-inline-flex p-3 rounded-3 bg-primary bg-opacity-10 text-primary mb-3">
+                            <i class="bi bi-database-check fs-3"></i>
+                        </div>
+                        <h5 class="card-title fw-bold">Persistencia JDBC y DAO</h5>
+                        <p class="card-text text-muted">
+                            ConexiÃ³n de alto rendimiento con pool HikariCP sobre PostgreSQL. Cumplimiento del patrÃ³n arquitectÃ³nico DAO/DTO establecido en el APF1.
+                        </p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-4">
+                <div class="card h-100 shadow-sm border-0">
+                    <div class="card-body">
+                        <div class="d-inline-flex p-3 rounded-3 bg-warning bg-opacity-10 text-warning mb-3">
+                            <i class="bi bi-code-slash fs-3"></i>
+                        </div>
+                        <h5 class="card-title fw-bold">Managed Beans y EL</h5>
+                        <p class="card-text text-muted">
+                            Enlace de datos bidireccional mediante Expression Language (EL: <code>#{habitacionBean...}</code>) y ciclo de vida de componentes JSF.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="card h-100 shadow-sm border-0">
+                    <div class="card-body">
+                        <div class="d-inline-flex p-3 rounded-3 bg-info bg-opacity-10 text-info mb-3">
+                            <i class="bi bi-bootstrap-fill fs-3"></i>
+                        </div>
+                        <h5 class="card-title fw-bold">Bootstrap 5 Responsive</h5>
+                        <p class="card-text text-muted">
+                            Interfaz de usuario moderna con paleta institucional, adaptable a dispositivos mÃ³viles y compatible con componentes Facelets.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </ui:define>
+</ui:composition>
