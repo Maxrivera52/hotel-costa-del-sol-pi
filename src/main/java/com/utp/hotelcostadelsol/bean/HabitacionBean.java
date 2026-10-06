@@ -53,7 +53,7 @@ public class HabitacionBean implements Serializable {
         this.mantenimiento = stats.getOrDefault("MANTENIMIENTO", 0);
     }
 
-    /* Filtros avanzados en revision */ private void _stub_filtrar() {
+    public void filtrar() {
         this.listaHabitaciones = habitacionService.listarPorFiltro(filtroEstado, filtroTipo);
         FacesContext.getCurrentInstance().addMessage(null,
             new FacesMessage(FacesMessage.SEVERITY_INFO, "Filtro aplicado", "Se encontraron " + listaHabitaciones.size() + " habitaciones."));
