@@ -79,7 +79,7 @@ public class HabitacionDAO {
         return filtradas;
     }
 
-    /* save() implementado en APF2 */ private boolean _stub_save(HabitacionDTO h) {
+    public boolean save(HabitacionDTO h) {
         if (!DatabaseConfig.isDbAvailable()) {
             h.setIdHabitacion(MOCK_HABITACIONES.size() + 1);
             MOCK_HABITACIONES.add(h);
