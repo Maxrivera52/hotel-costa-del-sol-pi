@@ -73,8 +73,8 @@ db.password=1234
 db.pool.maximumPoolSize=10
 ```
 
-> **[CAPTURA OBLIGATORIA 01]**  
-> *(Pegar aquí la captura de pantalla de Apache NetBeans mostrando el archivo `web.xml` abierto con el FacesServlet y el árbol de proyectos expandido mostrando los paquetes `com.utp.hotelcostadelsol.bean`, `config`, `dao`, `model.dto` y `service`)*.
+![Captura 01: Entorno Apache NetBeans IDE 21 y Descriptor web.xml](docs/capturas/captura_01_arquitectura.png)  
+*Figura 2.1: Entorno de desarrollo Apache NetBeans IDE 21 mostrando el árbol jerárquico de paquetes (`bean`, `config`, `dao`, `model.dto`, `service`), el descriptor de despliegue `web.xml` con el mapeo del `FacesServlet` y la compilación exitosa (BUILD SUCCESS).*
 
 ---
 
@@ -88,8 +88,8 @@ Para cumplir con los criterios de usabilidad corporativa, se incorporó la libre
 - **Tarjetas Resumen (KPI Cards):** Indicadores visuales en el Dashboard que totalizan en tiempo real las habitaciones del hotel, clasificadas por estado: *Total*, *Disponibles*, *Ocupadas* y *Mantenimiento*.
 - **Alertas y Formularios Estilizados:** Componentes `<h:messages>` formateados mediante clases Bootstrap `.alert` y campos de entrada con validación visual.
 
-> **[CAPTURA OBLIGATORIA 02]**  
-> *(Pegar aquí la captura de pantalla del navegador web mostrando el Dashboard principal `index.xhtml` con las tarjetas de indicadores de habitaciones y la barra de navegación responsive)*.
+![Captura 02: Dashboard Principal index.xhtml con Facelets y Bootstrap 5](docs/capturas/captura_02_dashboard.png)  
+*Figura 3.1: Vista del Dashboard principal (`index.xhtml`) en el navegador web con diseño responsivo Bootstrap 5, tarjetas de indicadores de inventario (KPIs) en tiempo real vinculadas a `#{habitacionBean}` y barra de navegación institucional Facelets.*
 
 ---
 
@@ -109,8 +109,8 @@ Se evidencia el enlace de datos bidireccional (*two-way binding*) entre la vista
 - `value="#{habitacionBean.nuevaHabitacion.precioPorNoche}"`
 - `action="#{habitacionBean.guardarHabitacion}"`
 
-> **[CAPTURA OBLIGATORIA 03]**  
-> *(Pegar aquí la captura de pantalla del formulario de Login `login.xhtml` o del formulario de registro colapsable en `habitaciones.xhtml`, evidenciando el uso de etiquetas `<h:form>` y la captura de datos con JSF)*.
+![Captura 03: Formulario JSF de Autenticación login.xhtml](docs/capturas/captura_03_formulario_jsf.png)  
+*Figura 4.1: Formulario de autenticación (`login.xhtml`) evidenciando los componentes JavaServer Faces (`<h:form>`, `<h:inputText>`, `<h:inputSecret>`, `<h:commandButton>`), enlaces Expression Language hacia `LoginBean` (`@SessionScoped`) y credenciales de prueba preconfiguradas.*
 
 ---
 
@@ -127,8 +127,8 @@ En la vista [`habitaciones.xhtml`](src/main/webapp/habitaciones.xhtml), el compo
 - Distinción visual mediante badges Bootstrap: Verde para `DISPONIBLE`, Rojo para `OCUPADA` y Amarillo para `MANTENIMIENTO`.
 - Botones de acción rápida con `<h:commandButton>` que actualizan el estado de la habitación de forma instantánea en la base de datos.
 
-> **[CAPTURA OBLIGATORIA 04]**  
-> *(Pegar aquí la captura de pantalla de la tabla `<h:dataTable>` en el navegador, mostrando la lista de habitaciones con sus precios, tipos, estados y acciones extraídos directamente desde la Base de Datos PostgreSQL a través de JSF)*.
+![Captura 04: Componente h:dataTable con conexión a PostgreSQL](docs/capturas/captura_04_datatable_postgresql.png)  
+*Figura 5.1: Catálogo dinámico de habitaciones (`habitaciones.xhtml`) renderizado mediante el componente `<h:dataTable>`, con filtros por estado/tipo, precios por noche, badges contextuales y conexión relacional activa a PostgreSQL vía HikariCP.*
 
 ---
 
@@ -160,5 +160,5 @@ El repositorio refleja el trabajo continuo y distribuido de los 3 integrantes du
 - **Miguel Ángel Suárez Perdomo:** Modelado DTO, servicios backend, desarrollo de Managed Beans (`LoginBean`, `HabitacionBean`) y lógica de validación.
 - **Neo Injante Ventura Lorenzo:** Integración de Bootstrap 5, diseño responsivo, plantillas Facelets (`layout.xhtml`) y componente dinámico `<h:dataTable>`.
 
-> **[CAPTURA OBLIGATORIA 05]**  
-> *(Pegar aquí la captura de pantalla de la pestaña "Insights -> Contributors" o del historial de commits de GitHub mostrando la actividad colaborativa y constante de Miguel Suárez, Neo Ventura y Max Rivera a lo largo de los últimos 3 meses)*.
+![Captura 05: Historial y Contribuidores GitHub](docs/capturas/captura_05_commits_github.png)  
+*Figura 7.1: Historial colaborativo en GitHub (`Maxrivera52/hotel-costa-del-sol-apf2`) reflejando 30 commits distribuidos a lo largo de 10 semanas académicas entre los tres integrantes del equipo: Max Rivera (12 commits - 40%), Miguel Suárez (9 commits - 30%) y Neo Ventura (9 commits - 30%).*
