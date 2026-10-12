@@ -26,3 +26,12 @@ venttura420@gmail.com) - *Frontend & DiseÃ±o UI*
 4. Clic derecho en el proyecto -> **Clean and Build**.
 5. Clic derecho -> **Run** (Seleccionando servidor Apache Tomcat).
 6. La aplicaciÃ³n abrirÃ¡ automÃ¡ticamente en: http://localhost:8080/hotel-costa-del-sol-apf2/.
+---
+
+## 3. Trazabilidad hacia el Proyecto Final (Semana 18)
+- **Alcance APF2 (40%):** Arquitectura base JSF 4.0, Managed Beans, navegaciÃ³n, enlaces EL y componente <h:dataTable> sobre PostgreSQL.
+- **Ruta CrÃ­tica hacia Semana 18 (100%):**
+  1. IntegraciÃ³n de Servicios Web RESTful con endpoints JSON.
+  2. MÃ³dulo de pasarela de pagos electrÃ³nicos y emisiÃ³n de vouchers PDF.
+  3. MÃ³dulo avanzado de Check-in / Check-out presencial con control de estancias.
+  4. Seguridad por roles ampliada (Filtros RBAC y tokens de sesiÃ³n).
