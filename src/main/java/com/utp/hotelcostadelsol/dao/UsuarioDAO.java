@@ -1,8 +1,11 @@
 package com.utp.hotelcostadelsol.dao;
 
-import at.favre.lib.crypto.bcrypt.BCrypt;
 import com.utp.hotelcostadelsol.config.DatabaseConfig;
 import com.utp.hotelcostadelsol.model.dto.UsuarioDTO;
+import com.utp.hotelcostadelsol.security.PasswordEncoder;
+import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -12,8 +15,12 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
+/**
+ * DAO para autenticacion y consulta de usuarios con soporte BCrypt, Apache Commons y Logback.
+ */
 public class UsuarioDAO {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(UsuarioDAO.class);
     private static final Map<String, UsuarioDTO> MOCK_USERS = new HashMap<>();
 
     static {
@@ -23,10 +30,17 @@ public class UsuarioDAO {
     }
 
     public Optional<UsuarioDTO> validarCredenciales(String username, String plainPassword) {
+        if (StringUtils.isAnyBlank(username, plainPassword)) {
+            return Optional.empty();
+        }
+        String cleanUser = StringUtils.trimToEmpty(username);
+
         if (!DatabaseConfig.isDbAvailable()) {
-            if (MOCK_USERS.containsKey(username) && (plainPassword.contains("123") || plainPassword.equals("admin") || plainPassword.equals("admin123"))) {
-                return Optional.of(MOCK_USERS.get(username));
+            if (MOCK_USERS.containsKey(cleanUser) && (plainPassword.contains("123") || plainPassword.equals("admin") || plainPassword.equals("admin123"))) {
+                LOGGER.info("Autenticacion exitosa en modo resiliente para usuario: {}", cleanUser);
+                return Optional.of(MOCK_USERS.get(cleanUser));
             }
+            LOGGER.warn("Intento fallido de autenticacion para usuario: {}", cleanUser);
             return Optional.empty();
         }
 
@@ -39,12 +53,11 @@ public class UsuarioDAO {
         try (Connection conn = DatabaseConfig.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
 
-            ps.setString(1, username);
+            ps.setString(1, cleanUser);
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
                     String hash = rs.getString("password_hash");
-                    BCrypt.Result result = BCrypt.verifyer().verify(plainPassword.toCharArray(), hash);
-                    if (result.verified) {
+                    if (PasswordEncoder.verifyPassword(plainPassword, hash)) {
                         UsuarioDTO u = new UsuarioDTO();
                         u.setIdUsuario(rs.getInt("id_usuario"));
                         u.setIdRol(rs.getInt("id_rol"));
@@ -55,12 +68,13 @@ public class UsuarioDAO {
                         u.setEmail(rs.getString("email"));
                         u.setTelefono(rs.getString("telefono"));
                         u.setEstado(rs.getString("estado"));
+                        LOGGER.info("Usuario autenticado contra PostgreSQL: {} ({})", u.getUsername(), u.getRolCodigo());
                         return Optional.of(u);
                     }
                 }
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            LOGGER.error("Error SQL al validar credenciales de {}: {}", cleanUser, e.getMessage());
         }
         return Optional.empty();
     }

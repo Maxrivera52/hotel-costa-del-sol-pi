@@ -2,6 +2,8 @@ package com.utp.hotelcostadelsol.dao;
 
 import com.utp.hotelcostadelsol.config.DatabaseConfig;
 import com.utp.hotelcostadelsol.model.dto.TipoHabitacionDTO;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.math.BigDecimal;
 import java.sql.Connection;
@@ -10,9 +12,14 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
+/**
+ * DAO para el catalogo de categorias de habitacion (TipoHabitacionDTO).
+ */
 public class TipoHabitacionDAO {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(TipoHabitacionDAO.class);
     private static final List<TipoHabitacionDTO> MOCK_TIPOS = new ArrayList<>();
 
     static {
@@ -46,9 +53,15 @@ public class TipoHabitacionDAO {
                 ));
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            LOGGER.error("Error al consultar tipos de habitacion en PostgreSQL: {}", e.getMessage());
             return new ArrayList<>(MOCK_TIPOS);
         }
         return list;
+    }
+
+    public Optional<TipoHabitacionDTO> findById(int idTipo) {
+        return findAll().stream()
+                .filter(t -> t.getIdTipo() == idTipo)
+                .findFirst();
     }
 }
