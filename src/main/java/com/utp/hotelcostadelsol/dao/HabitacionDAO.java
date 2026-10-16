@@ -1,7 +1,12 @@
 package com.utp.hotelcostadelsol.dao;
 
+import com.google.common.base.Preconditions;
+import com.google.common.collect.ImmutableMap;
 import com.utp.hotelcostadelsol.config.DatabaseConfig;
 import com.utp.hotelcostadelsol.model.dto.HabitacionDTO;
+import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.math.BigDecimal;
 import java.sql.Connection;
@@ -9,12 +14,18 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
-public class HabitacionDAO {
+/**
+ * Implementacion DAO para la entidad Habitacion sobre PostgreSQL,
+ * aplicando el principio SOLID de Inversion de Dependencias (IHabitacionDAO),
+ * Google Guava, Apache Commons Lang3 y Logback.
+ */
+public class HabitacionDAO implements IHabitacionDAO {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(HabitacionDAO.class);
     private static final List<HabitacionDTO> MOCK_HABITACIONES = new ArrayList<>();
 
     static {
@@ -29,6 +40,7 @@ public class HabitacionDAO {
         MOCK_HABITACIONES.add(new HabitacionDTO(9, 5, "501", 5, "Suite Presidencial Real", "DISPONIBLE", new BigDecimal("550.00"), "Terraza exclusiva VIP"));
     }
 
+    @Override
     public List<HabitacionDTO> findAll() {
         if (!DatabaseConfig.isDbAvailable()) {
             return new ArrayList<>(MOCK_HABITACIONES);
@@ -58,18 +70,26 @@ public class HabitacionDAO {
                 ));
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            LOGGER.error("Error al listar habitaciones desde PostgreSQL: {}", e.getMessage());
             return new ArrayList<>(MOCK_HABITACIONES);
         }
         return list;
     }
 
+    @Override
+    public Optional<HabitacionDTO> findById(int idHabitacion) {
+        return findAll().stream()
+                .filter(h -> h.getIdHabitacion() == idHabitacion)
+                .findFirst();
+    }
+
+    @Override
     public List<HabitacionDTO> findByFiltro(String estado, Integer idTipo) {
         List<HabitacionDTO> todas = findAll();
         List<HabitacionDTO> filtradas = new ArrayList<>();
 
         for (HabitacionDTO h : todas) {
-            boolean matchEstado = (estado == null || estado.trim().isEmpty() || h.getEstado().equalsIgnoreCase(estado));
+            boolean matchEstado = (StringUtils.isBlank(estado) || StringUtils.equalsIgnoreCase(h.getEstado(), estado.trim()));
             boolean matchTipo = (idTipo == null || idTipo <= 0 || h.getIdTipo() == idTipo);
 
             if (matchEstado && matchTipo) {
@@ -79,10 +99,15 @@ public class HabitacionDAO {
         return filtradas;
     }
 
+    @Override
     public boolean save(HabitacionDTO h) {
+        Preconditions.checkNotNull(h, "HabitacionDTO no puede ser nulo");
+        Preconditions.checkArgument(StringUtils.isNotBlank(h.getNumero()), "El numero de habitacion es obligatorio");
+
         if (!DatabaseConfig.isDbAvailable()) {
             h.setIdHabitacion(MOCK_HABITACIONES.size() + 1);
             MOCK_HABITACIONES.add(h);
+            LOGGER.info("Habitacion {} registrada en almacenamiento resiliente.", h.getNumero());
             return true;
         }
 
@@ -93,24 +118,33 @@ public class HabitacionDAO {
              PreparedStatement ps = conn.prepareStatement(sql)) {
 
             ps.setInt(1, h.getIdTipo());
-            ps.setString(2, h.getNumero());
+            ps.setString(2, StringUtils.trimToEmpty(h.getNumero()));
             ps.setInt(3, h.getPiso());
-            ps.setString(4, h.getEstado());
+            ps.setString(4, StringUtils.defaultIfBlank(h.getEstado(), "DISPONIBLE"));
             ps.setBigDecimal(5, h.getPrecioPorNoche());
-            ps.setString(6, h.getObservaciones());
+            ps.setString(6, StringUtils.trimToEmpty(h.getObservaciones()));
 
-            return ps.executeUpdate() > 0;
+            boolean ok = ps.executeUpdate() > 0;
+            if (ok) {
+                LOGGER.info("Habitacion {} insertada en PostgreSQL.", h.getNumero());
+            }
+            return ok;
         } catch (SQLException e) {
-            e.printStackTrace();
+            LOGGER.error("Error al guardar habitacion {}: {}", h.getNumero(), e.getMessage());
             return false;
         }
     }
 
+    @Override
     public boolean updateEstado(int idHabitacion, String nuevoEstado) {
+        Preconditions.checkArgument(idHabitacion > 0, "ID de habitacion invalido");
+        Preconditions.checkArgument(StringUtils.isNotBlank(nuevoEstado), "El nuevo estado no puede ser vacio");
+
         if (!DatabaseConfig.isDbAvailable()) {
             for (HabitacionDTO h : MOCK_HABITACIONES) {
                 if (h.getIdHabitacion() == idHabitacion) {
-                    h.setEstado(nuevoEstado);
+                    h.setEstado(nuevoEstado.trim().toUpperCase());
+                    LOGGER.info("Habitacion ID={} actualizada a estado {} en memoria.", idHabitacion, nuevoEstado);
                     return true;
                 }
             }
@@ -121,17 +155,17 @@ public class HabitacionDAO {
         try (Connection conn = DatabaseConfig.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
 
-            ps.setString(1, nuevoEstado);
+            ps.setString(1, nuevoEstado.trim().toUpperCase());
             ps.setInt(2, idHabitacion);
             return ps.executeUpdate() > 0;
         } catch (SQLException e) {
-            e.printStackTrace();
+            LOGGER.error("Error al actualizar estado de habitacion ID={}: {}", idHabitacion, e.getMessage());
             return false;
         }
     }
 
+    @Override
     public Map<String, Integer> contarPorEstado() {
-        Map<String, Integer> map = new HashMap<>();
         int disponibles = 0;
         int ocupadas = 0;
         int mantenimiento = 0;
@@ -143,10 +177,11 @@ public class HabitacionDAO {
             else if ("MANTENIMIENTO".equalsIgnoreCase(h.getEstado())) mantenimiento++;
         }
 
-        map.put("TOTAL", list.size());
-        map.put("DISPONIBLE", disponibles);
-        map.put("OCUPADA", ocupadas);
-        map.put("MANTENIMIENTO", mantenimiento);
-        return map;
+        return ImmutableMap.of(
+                "TOTAL", list.size(),
+                "DISPONIBLE", disponibles,
+                "OCUPADA", ocupadas,
+                "MANTENIMIENTO", mantenimiento
+        );
     }
 }

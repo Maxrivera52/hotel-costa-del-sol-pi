@@ -6,6 +6,11 @@
 
     <display-name>Hotel Wyndham Costa del Sol Chiclayo - APF2</display-name>
 
+    <!-- Desactivacion de CDI para Servlet Container puro (Tomcat 11) -->
+    <context-param>
+        <param-name>com.sun.faces.enableCdi</param-name>
+        <param-value>false</param-value>
+    </context-param>
     <context-param>
         <param-name>jakarta.faces.PROJECT_STAGE</param-name>
         <param-value>Development</param-value>
