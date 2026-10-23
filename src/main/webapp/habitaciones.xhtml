@@ -4,39 +4,44 @@
                 xmlns:ui="jakarta.faces.facelets"
                 template="/WEB-INF/templates/layout.xhtml">
 
-    <ui:define name="title">Hotel Costa del Sol - GestiÃ³n de Habitaciones</ui:define>
+    <ui:define name="title">Hotel Costa del Sol - Gestión de Habitaciones</ui:define>
 
     <ui:define name="content">
         <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center mb-4 gap-3">
             <div>
                 <h2 class="fw-bold mb-1 text-dark">
-                    <i class="bi bi-door-open-fill text-warning me-2"></i> CatÃ¡logo DinÃ¡mico de Habitaciones
+                    <i class="bi bi-door-open-fill text-warning me-2"></i> Catálogo Dinámico de Habitaciones
                 </h2>
-                <p class="text-muted mb-0">DemostraciÃ³n del componente <code>&lt;h:dataTable&gt;</code> conectado a la capa DAO / JDBC (PostgreSQL).</p>
+                <p class="text-muted mb-0">Gestión de inventario con caché Google Guava, persistencia DAO/PostgreSQL y exportación Excel mediante Apache POI.</p>
             </div>
             
-            <div>
+            <div class="d-flex gap-2">
+                <h:form id="formExportHab">
+                    <h:commandButton value="Exportar Excel (.xlsx) - Apache POI"
+                                     action="#{habitacionBean.exportarExcel}"
+                                     styleClass="btn btn-success fw-semibold"/>
+                </h:form>
                 <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#collapseRegistro">
-                    <i class="bi bi-plus-circle me-1"></i> Nueva HabitaciÃ³n (h:form)
+                    <i class="bi bi-plus-circle me-1"></i> Nueva Habitación
                 </button>
             </div>
         </div>
 
         <h:messages globalOnly="true" styleClass="alert alert-info list-unstyled py-2 px-3 mb-3"/>
 
-        <!-- Formulario Colapsable de Registro (Captura 03 de la RÃºbrica) -->
+        <!-- Formulario Colapsable de Registro -->
         <div class="collapse mb-4" id="collapseRegistro">
             <div class="card shadow-sm border-primary">
                 <div class="card-header bg-primary text-white py-3">
                     <h5 class="mb-0 fw-bold">
-                        <i class="bi bi-pencil-square me-2"></i> Registro de HabitaciÃ³n (Captura de Datos JSF)
+                        <i class="bi bi-pencil-square me-2"></i> Registro de Habitación (Captura de Datos JSF)
                     </h5>
                 </div>
                 <div class="card-body p-4 bg-light">
                     <h:form id="formNuevaHab">
                         <div class="row g-3">
                             <div class="col-md-3">
-                                <label class="form-label fw-semibold">NÃºmero de HabitaciÃ³n:</label>
+                                <label class="form-label fw-semibold">Número de Habitación:</label>
                                 <h:inputText value="#{habitacionBean.nuevaHabitacion.numero}" styleClass="form-control" required="true"/>
                             </div>
 
@@ -46,7 +51,7 @@
                             </div>
 
                             <div class="col-md-4">
-                                <label class="form-label fw-semibold">Tipo de HabitaciÃ³n:</label>
+                                <label class="form-label fw-semibold">Tipo de Habitación:</label>
                                 <h:selectOneMenu value="#{habitacionBean.nuevaHabitacion.idTipo}" styleClass="form-select">
                                     <f:selectItems value="#{habitacionBean.listaTipos}" var="t" itemValue="#{t.idTipo}" itemLabel="#{t.nombre} (S/. #{t.precioBaseNoche})"/>
                                 </h:selectOneMenu>
@@ -58,12 +63,12 @@
                             </div>
 
                             <div class="col-md-9">
-                                <label class="form-label fw-semibold">Observaciones / UbicaciÃ³n:</label>
+                                <label class="form-label fw-semibold">Observaciones / Ubicación:</label>
                                 <h:inputText value="#{habitacionBean.nuevaHabitacion.observaciones}" styleClass="form-control"/>
                             </div>
 
                             <div class="col-md-3 d-flex align-items-end">
-                                <h:commandButton value="Guardar HabitaciÃ³n" 
+                                <h:commandButton value="Guardar Habitación" 
                                                  action="#{habitacionBean.guardarHabitacion}" 
                                                  styleClass="btn btn-success w-100 fw-bold">
                                 </h:commandButton>
@@ -74,7 +79,7 @@
             </div>
         </div>
 
-        <!-- Filtros DinÃ¡micos JSF -->
+        <!-- Filtros Dinámicos JSF -->
         <div class="card shadow-sm border-0 mb-4 bg-white">
             <div class="card-body p-3">
                 <h:form id="formFiltro" styleClass="row g-2 align-items-center">
@@ -111,7 +116,7 @@
             </div>
         </div>
 
-        <!-- TABLA DINÃMICA DE DATOS CON <h:dataTable> (Captura Obligatoria 04) -->
+        <!-- TABLA DINÁMICA DE DATOS CON <h:dataTable> -->
         <div class="card shadow-sm border-0">
             <div class="card-header bg-white py-3 d-flex justify-content-between align-items-center">
                 <h5 class="fw-bold mb-0 text-dark">
@@ -130,7 +135,7 @@
                                      styleClass="table table-hover table-striped align-middle mb-0 table-custom">
 
                             <h:column>
-                                <f:facet name="header">NÂ° HabitaciÃ³n</f:facet>
+                                <f:facet name="header">N° Habitación</f:facet>
                                 <span class="fw-bold text-primary fs-6">
                                     <i class="bi bi-door-closed me-1"></i> #{hab.numero}
                                 </span>
@@ -142,7 +147,7 @@
                             </h:column>
 
                             <h:column>
-                                <f:facet name="header">Tipo de HabitaciÃ³n</f:facet>
+                                <f:facet name="header">Tipo de Habitación</f:facet>
                                 <span class="fw-semibold">#{hab.tipoNombre}</span>
                             </h:column>
 
@@ -176,7 +181,7 @@
                             </h:column>
 
                             <h:column>
-                                <f:facet name="header">AcciÃ³n RÃ¡pida JSF</f:facet>
+                                <f:facet name="header">Acción Rápida JSF</f:facet>
                                 <div class="btn-group btn-group-sm">
                                     <h:commandButton value="Disponible" 
                                                      action="#{habitacionBean.cambiarEstado(hab, 'DISPONIBLE')}" 

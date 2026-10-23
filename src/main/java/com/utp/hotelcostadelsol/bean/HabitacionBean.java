@@ -2,21 +2,34 @@ package com.utp.hotelcostadelsol.bean;
 
 import com.utp.hotelcostadelsol.model.dto.HabitacionDTO;
 import com.utp.hotelcostadelsol.model.dto.TipoHabitacionDTO;
+import com.utp.hotelcostadelsol.service.ExcelExportService;
 import com.utp.hotelcostadelsol.service.HabitacionService;
+import com.utp.hotelcostadelsol.service.IReporteExportService;
 import jakarta.annotation.PostConstruct;
 import jakarta.faces.application.FacesMessage;
+import jakarta.faces.context.ExternalContext;
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.view.ViewScoped;
 import jakarta.inject.Named;
+import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.io.OutputStream;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Managed Bean (@ViewScoped) para la gestion del inventario de habitaciones
+ * y exportacion de reportes en formato Microsoft Excel (.xlsx) mediante Apache POI.
+ */
 @Named("habitacionBean")
 @ViewScoped
 public class HabitacionBean implements Serializable {
     private static final long serialVersionUID = 1L;
+    private static final Logger LOGGER = LoggerFactory.getLogger(HabitacionBean.class);
 
     private List<HabitacionDTO> listaHabitaciones;
     private List<TipoHabitacionDTO> listaTipos;
@@ -32,6 +45,7 @@ public class HabitacionBean implements Serializable {
     private int mantenimiento;
 
     private final HabitacionService habitacionService = new HabitacionService();
+    private final IReporteExportService exportService = new ExcelExportService();
 
     @PostConstruct
     public void init() {
@@ -66,7 +80,7 @@ public class HabitacionBean implements Serializable {
     }
 
     public void guardarHabitacion() {
-        if (nuevaHabitacion.getNumero() == null || nuevaHabitacion.getNumero().trim().isEmpty()) {
+        if (StringUtils.isBlank(nuevaHabitacion.getNumero())) {
             FacesContext.getCurrentInstance().addMessage(null,
                 new FacesMessage(FacesMessage.SEVERITY_ERROR, "Validacion", "El numero de habitacion es obligatorio."));
             return;
@@ -101,6 +115,31 @@ public class HabitacionBean implements Serializable {
             cargarDatos();
             FacesContext.getCurrentInstance().addMessage(null,
                 new FacesMessage(FacesMessage.SEVERITY_INFO, "Estado Actualizado", "Habitacion " + hab.getNumero() + " cambio a estado " + nuevoEstado));
+        }
+    }
+
+    /**
+     * Descarga el inventario actual de habitaciones en formato Excel (.xlsx) usando Apache POI.
+     */
+    public void exportarExcel() {
+        try {
+            byte[] excelBytes = exportService.exportarInventarioHabitacionesExcel(listaHabitaciones);
+            FacesContext fc = FacesContext.getCurrentInstance();
+            ExternalContext ec = fc.getExternalContext();
+            ec.responseReset();
+            ec.setResponseContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+            ec.setResponseContentLength(excelBytes.length);
+            ec.setResponseHeader("Content-Disposition", "attachment; filename=\"Inventario_Habitaciones_CostaDelSol.xlsx\"");
+
+            try (OutputStream out = ec.getResponseOutputStream()) {
+                out.write(excelBytes);
+                out.flush();
+            }
+            fc.responseComplete();
+        } catch (Exception e) {
+            LOGGER.error("Error al exportar Excel de habitaciones: {}", e.getMessage());
+            FacesContext.getCurrentInstance().addMessage(null,
+                new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error Apache POI", "No se pudo generar el archivo Excel."));
         }
     }
 

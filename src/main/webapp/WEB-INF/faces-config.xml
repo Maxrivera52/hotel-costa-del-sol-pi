@@ -26,6 +26,16 @@
             <redirect/>
         </navigation-case>
         <navigation-case>
+            <from-outcome>ir_reservas</from-outcome>
+            <to-view-id>/reservas.xhtml</to-view-id>
+            <redirect/>
+        </navigation-case>
+        <navigation-case>
+            <from-outcome>ir_recepcion</from-outcome>
+            <to-view-id>/recepcion.xhtml</to-view-id>
+            <redirect/>
+        </navigation-case>
+        <navigation-case>
             <from-outcome>ir_login</from-outcome>
             <to-view-id>/login.xhtml</to-view-id>
             <redirect/>
