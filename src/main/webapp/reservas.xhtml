@@ -1,0 +1,189 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="jakarta.faces.html"
+                xmlns:f="jakarta.faces.core"
+                xmlns:ui="jakarta.faces.facelets"
+                template="/WEB-INF/templates/layout.xhtml">
+
+    <ui:define name="title">Hotel Costa del Sol - Reservas y Cotizador (APF3)</ui:define>
+
+    <ui:define name="content">
+        <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center mb-4 gap-3">
+            <div>
+                <h2 class="fw-bold mb-1 text-dark">
+                    <i class="bi bi-calendar2-check-fill text-primary me-2"></i> Gestión de Reservas y Cotizador Dinámico
+                </h2>
+                <p class="text-muted mb-0">
+                    Validaciones defensivas con <strong>Google Guava</strong>, códigos únicos con <strong>Apache Commons</strong> y exportación con <strong>Apache POI</strong>.
+                </p>
+            </div>
+            <div>
+                <h:form id="formExportReservas">
+                    <h:commandButton value="Exportar Reporte Excel (.xlsx) - Apache POI"
+                                     action="#{reservaBean.exportarExcel}"
+                                     styleClass="btn btn-success fw-semibold"/>
+                </h:form>
+            </div>
+        </div>
+
+        <h:messages globalOnly="true" styleClass="alert alert-info list-unstyled py-2 px-3 mb-3"/>
+
+        <!-- Formulario de Cotización y Nueva Reserva -->
+        <div class="card shadow-sm border-0 mb-4">
+            <div class="card-header bg-primary text-white py-3">
+                <h5 class="mb-0 fw-bold">
+                    <i class="bi bi-calculator me-2"></i> Cotizador y Registro de Nueva Reserva
+                </h5>
+            </div>
+            <div class="card-body p-4 bg-white">
+                <h:form id="formReserva">
+                    <div class="row g-3">
+                        <div class="col-md-4">
+                            <label class="form-label fw-semibold">Nombre del Huésped / Cliente:</label>
+                            <h:inputText value="#{reservaBean.nuevaReserva.nombreCliente}" styleClass="form-control" required="true"/>
+                        </div>
+
+                        <div class="col-md-4">
+                            <label class="form-label fw-semibold">Categoría de Habitación:</label>
+                            <h:selectOneMenu value="#{reservaBean.nuevaReserva.idTipoHabitacion}" styleClass="form-select">
+                                <f:selectItems value="#{reservaBean.listaTipos}" var="t"
+                                               itemValue="#{t.idTipo}"
+                                               itemLabel="#{t.nombre} (S/ #{t.precioBaseNoche} / noche)"/>
+                            </h:selectOneMenu>
+                        </div>
+
+                        <div class="col-md-4">
+                            <label class="form-label fw-semibold">Habitación Asignada (Opcional):</label>
+                            <h:selectOneMenu value="#{reservaBean.nuevaReserva.idHabitacion}" styleClass="form-select">
+                                <f:selectItem itemValue="0" itemLabel="-- Asignar en Check-in --"/>
+                                <f:selectItems value="#{reservaBean.habitacionesDisponibles}" var="h"
+                                               itemValue="#{h.idHabitacion}"
+                                               itemLabel="Hab. #{h.numero} - #{h.tipoNombre}"/>
+                            </h:selectOneMenu>
+                        </div>
+
+                        <div class="col-md-3">
+                            <label class="form-label fw-semibold">Fecha Check-in (YYYY-MM-DD):</label>
+                            <h:inputText value="#{reservaBean.fechaCheckinStr}" styleClass="form-control" required="true"/>
+                        </div>
+
+                        <div class="col-md-3">
+                            <label class="form-label fw-semibold">Fecha Check-out (YYYY-MM-DD):</label>
+                            <h:inputText value="#{reservaBean.fechaCheckoutStr}" styleClass="form-control" required="true"/>
+                        </div>
+
+                        <div class="col-md-2">
+                            <label class="form-label fw-semibold">N° Huéspedes:</label>
+                            <h:inputText value="#{reservaBean.nuevaReserva.numeroHuespedes}" styleClass="form-control"/>
+                        </div>
+
+                        <div class="col-md-2">
+                            <label class="form-label fw-semibold">Servicios Extra (S/):</label>
+                            <h:inputText value="#{reservaBean.nuevaReserva.precioServiciosExtra}" styleClass="form-control"/>
+                        </div>
+
+                        <div class="col-md-2">
+                            <label class="form-label fw-semibold">Canal / Origen:</label>
+                            <h:selectOneMenu value="#{reservaBean.nuevaReserva.origen}" styleClass="form-select">
+                                <f:selectItem itemValue="WEB" itemLabel="Portal Web"/>
+                                <f:selectItem itemValue="RECEPCION" itemLabel="Recepción"/>
+                                <f:selectItem itemValue="CORPORATIVO" itemLabel="Corporativo"/>
+                            </h:selectOneMenu>
+                        </div>
+
+                        <div class="col-md-8">
+                            <label class="form-label fw-semibold">Comentarios / Requerimientos Especiales:</label>
+                            <h:inputText value="#{reservaBean.nuevaReserva.comentarios}" styleClass="form-control"/>
+                        </div>
+
+                        <div class="col-md-4 d-flex align-items-end gap-2">
+                            <h:commandButton value="1. Calcular Cotización"
+                                             action="#{reservaBean.cotizar}"
+                                             styleClass="btn btn-outline-primary w-50 fw-semibold"/>
+                            <h:commandButton value="2. Confirmar Reserva"
+                                             action="#{reservaBean.guardarReserva}"
+                                             styleClass="btn btn-primary w-50 fw-bold"/>
+                        </div>
+                    </div>
+
+                    <h:panelGroup rendered="#{reservaBean.cotizacionActual ne null}">
+                        <div class="alert alert-success mt-3 mb-0 d-flex justify-content-between align-items-center">
+                            <div>
+                                <strong>Resumen de Cotización (#{reservaBean.cotizacionActual.nombreTipoHabitacion}):</strong>
+                                #{reservaBean.cotizacionActual.noches} noche(s) x S/ #{reservaBean.cotizacionActual.precioBaseNoche} =
+                                Alojamiento S/ #{reservaBean.cotizacionActual.subtotalAlojamiento} +
+                                Extras S/ #{reservaBean.cotizacionActual.cargoServiciosExtra}
+                            </div>
+                            <span class="fs-5 fw-bold">Total: S/ #{reservaBean.cotizacionActual.montoTotal}</span>
+                        </div>
+                    </h:panelGroup>
+                </h:form>
+            </div>
+        </div>
+
+        <!-- Filtro por estado y Tabla de Reservas -->
+        <div class="card shadow-sm border-0">
+            <div class="card-header bg-white py-3 d-flex flex-wrap justify-content-between align-items-center gap-2">
+                <h5 class="fw-bold mb-0 text-dark">
+                    <i class="bi bi-journal-bookmark-fill text-primary me-2"></i> Padrón General de Reservas
+                </h5>
+                <h:form id="formFiltroReserva" styleClass="d-flex align-items-center gap-2">
+                    <h:selectOneMenu value="#{reservaBean.filtroEstado}" styleClass="form-select form-select-sm">
+                        <f:selectItem itemValue="" itemLabel="-- Todos los Estados --"/>
+                        <f:selectItem itemValue="PENDIENTE" itemLabel="Pendientes"/>
+                        <f:selectItem itemValue="CONFIRMADA" itemLabel="Confirmadas"/>
+                        <f:selectItem itemValue="CHECK_IN" itemLabel="En Check-in"/>
+                        <f:selectItem itemValue="FINALIZADA" itemLabel="Finalizadas"/>
+                        <f:selectItem itemValue="CANCELADA" itemLabel="Canceladas"/>
+                    </h:selectOneMenu>
+                    <h:commandButton value="Filtrar" action="#{reservaBean.filtrar}" styleClass="btn btn-primary btn-sm"/>
+                    <h:commandButton value="Todos" action="#{reservaBean.limpiarFiltros}" styleClass="btn btn-outline-secondary btn-sm"/>
+                </h:form>
+            </div>
+
+            <div class="card-body p-0">
+                <h:form id="formTablaReservas">
+                    <div class="table-responsive">
+                        <h:dataTable value="#{reservaBean.listaReservas}" var="res"
+                                     styleClass="table table-hover table-striped align-middle mb-0">
+                            <h:column>
+                                <f:facet name="header">Código</f:facet>
+                                <span class="fw-bold text-primary">#{res.codigoReserva}</span>
+                            </h:column>
+                            <h:column>
+                                <f:facet name="header">Huésped</f:facet>
+                                <span class="fw-semibold">#{res.nombreCliente}</span>
+                            </h:column>
+                            <h:column>
+                                <f:facet name="header">Categoría / Hab.</f:facet>
+                                <div>#{res.nombreTipoHabitacion}</div>
+                                <small class="text-muted">Hab: #{res.numeroHabitacion}</small>
+                            </h:column>
+                            <h:column>
+                                <f:facet name="header">Check-in / Check-out</f:facet>
+                                <div><i class="bi bi-box-arrow-in-right text-success"></i> #{res.fechaCheckin}</div>
+                                <div><i class="bi bi-box-arrow-right text-danger"></i> #{res.fechaCheckout} (#{res.cantidadNoches} noches)</div>
+                            </h:column>
+                            <h:column>
+                                <f:facet name="header">Total</f:facet>
+                                <span class="fw-bold text-success">S/ #{res.montoTotal}</span>
+                            </h:column>
+                            <h:column>
+                                <f:facet name="header">Estado</f:facet>
+                                <span class="badge #{res.estado eq 'CONFIRMADA' ? 'bg-success' : (res.estado eq 'CHECK_IN' ? 'bg-primary' : (res.estado eq 'PENDIENTE' ? 'bg-warning text-dark' : (res.estado eq 'CANCELADA' ? 'bg-danger' : 'bg-secondary')))} px-3 py-2">
+                                    #{res.estado}
+                                </span>
+                            </h:column>
+                            <h:column>
+                                <f:facet name="header">Acción</f:facet>
+                                <h:commandButton value="Cancelar"
+                                                 action="#{reservaBean.cancelar(res)}"
+                                                 styleClass="btn btn-outline-danger btn-sm"
+                                                 rendered="#{res.estado ne 'CANCELADA' and res.estado ne 'FINALIZADA'}"/>
+                            </h:column>
+                        </h:dataTable>
+                    </div>
+                </h:form>
+            </div>
+        </div>
+    </ui:define>
+</ui:composition>

@@ -4,34 +4,38 @@
                 xmlns:ui="jakarta.faces.facelets"
                 template="/WEB-INF/templates/layout.xhtml">
 
-    <ui:define name="title">Hotel Costa del Sol - Inicio APF2</ui:define>
+    <ui:define name="title">Hotel Costa del Sol - Dashboard APF3 (70%)</ui:define>
 
     <ui:define name="content">
         <!-- Hero Header -->
         <div class="p-4 p-md-5 mb-4 rounded-3 text-white shadow-sm" style="background: linear-gradient(135deg, #0a2540 0%, #1e3a8a 100%);">
             <div class="container-fluid py-2">
-                <div class="d-flex align-items-center gap-2 mb-2">
-                    <span class="badge bg-warning text-dark px-3 py-1">APF2: Semana 10</span>
-                    <span class="text-light-50">JavaServer Faces (JSF 4.0) + Bootstrap 5 + PostgreSQL</span>
+                <div class="d-flex flex-wrap align-items-center gap-2 mb-2">
+                    <span class="badge bg-warning text-dark px-3 py-1">APF3: Semana 12 — Alcance 70%</span>
+                    <span class="badge bg-info text-dark px-3 py-1">MVC + TDD + DAO + SOLID</span>
+                    <span class="text-light-50 small">Google Guava • Apache POI • Apache Commons • Logback</span>
                 </div>
-                <h1 class="display-5 fw-bold">Sistema de GestiÃ³n Hotelera</h1>
-                <p class="col-md-9 fs-5 text-light-emphasis">
-                    Plataforma empresarial para el Hotel Wyndham Costa del Sol Chiclayo. MÃ³dulo de control de inventario, catÃ¡logo dinÃ¡mico de habitaciones y respaldo con Managed Beans.
+                <h1 class="display-5 fw-bold">Sistema de Gestión Hotelera</h1>
+                <p class="col-md-10 fs-5 text-light-emphasis">
+                    Plataforma empresarial para el Hotel Wyndham Costa del Sol Chiclayo. Integra gestión de inventario, cotizador dinámico de reservas, operaciones de recepción (Check-in/Check-out), exportación Excel con Apache POI y auditoría de seguridad.
                 </p>
-                <div class="d-flex gap-2">
-                    <h:link outcome="habitaciones.xhtml" styleClass="btn btn-warning btn-lg fw-semibold px-4">
-                        <i class="bi bi-table me-2"></i> Ver Tabla de Datos JSF
+                <div class="d-flex flex-wrap gap-2 mt-3">
+                    <h:link outcome="reservas.xhtml" styleClass="btn btn-warning btn-lg fw-semibold px-4">
+                        <i class="bi bi-calendar2-check me-2"></i> Gestionar Reservas y Cotizador
                     </h:link>
-                    <h:link outcome="login.xhtml" styleClass="btn btn-outline-light btn-lg px-4" rendered="#{!loginBean.autenticado}">
-                        <i class="bi bi-shield-lock me-2"></i> Acceso Administrativo
+                    <h:link outcome="recepcion.xhtml" styleClass="btn btn-light btn-lg fw-semibold px-4">
+                        <i class="bi bi-key-fill me-2"></i> Recepción (Check-in / Check-out)
+                    </h:link>
+                    <h:link outcome="habitaciones.xhtml" styleClass="btn btn-outline-light btn-lg px-4">
+                        <i class="bi bi-door-open me-2"></i> Inventario Habitaciones
                     </h:link>
                 </div>
             </div>
         </div>
 
-        <!-- Tarjetas Estadisticas vinculadas al Managed Bean -->
+        <!-- KPIs de Inventario y Reservas -->
         <h3 class="fw-bold mb-3 text-dark">
-            <i class="bi bi-speedometer2 text-primary me-2"></i> Estado Operativo del Hotel
+            <i class="bi bi-speedometer2 text-primary me-2"></i> Indicadores Operativos en Tiempo Real (70%)
         </h3>
         
         <div class="row g-3 mb-4">
@@ -41,7 +45,7 @@
                         <div>
                             <span class="text-muted text-uppercase fw-semibold small">Total Habitaciones</span>
                             <h2 class="fw-bold my-1 text-primary">#{habitacionBean.totalHabitaciones}</h2>
-                            <small class="text-muted">Capacidad registrada</small>
+                            <small class="text-success fw-medium">#{habitacionBean.disponibles} disponibles ahora</small>
                         </div>
                         <div class="stat-icon bg-primary bg-opacity-10 text-primary">
                             <i class="bi bi-door-open-fill"></i>
@@ -54,12 +58,12 @@
                 <div class="card card-stat shadow-sm border-start border-success border-4 p-3 bg-white">
                     <div class="d-flex align-items-center justify-content-between">
                         <div>
-                            <span class="text-muted text-uppercase fw-semibold small">Disponibles</span>
-                            <h2 class="fw-bold my-1 text-success">#{habitacionBean.disponibles}</h2>
-                            <small class="text-success fw-medium">Listas para check-in</small>
+                            <span class="text-muted text-uppercase fw-semibold small">Reservas Registradas</span>
+                            <h2 class="fw-bold my-1 text-success">#{reservaBean.totalReservas}</h2>
+                            <small class="text-muted">#{reservaBean.confirmadas} confirmadas / #{reservaBean.pendientes} pendientes</small>
                         </div>
                         <div class="stat-icon bg-success bg-opacity-10 text-success">
-                            <i class="bi bi-check-circle-fill"></i>
+                            <i class="bi bi-calendar-check-fill"></i>
                         </div>
                     </div>
                 </div>
@@ -69,12 +73,12 @@
                 <div class="card card-stat shadow-sm border-start border-danger border-4 p-3 bg-white">
                     <div class="d-flex align-items-center justify-content-between">
                         <div>
-                            <span class="text-muted text-uppercase fw-semibold small">Ocupadas</span>
-                            <h2 class="fw-bold my-1 text-danger">#{habitacionBean.ocupadas}</h2>
-                            <small class="text-danger fw-medium">HuÃ©spedes alojados</small>
+                            <span class="text-muted text-uppercase fw-semibold small">Estancias en Curso</span>
+                            <h2 class="fw-bold my-1 text-danger">#{reservaBean.enCheckin}</h2>
+                            <small class="text-danger fw-medium">Huéspedes con Check-in activo</small>
                         </div>
                         <div class="stat-icon bg-danger bg-opacity-10 text-danger">
-                            <i class="bi bi-person-fill-lock"></i>
+                            <i class="bi bi-person-badge-fill"></i>
                         </div>
                     </div>
                 </div>
@@ -84,57 +88,66 @@
                 <div class="card card-stat shadow-sm border-start border-warning border-4 p-3 bg-white">
                     <div class="d-flex align-items-center justify-content-between">
                         <div>
-                            <span class="text-muted text-uppercase fw-semibold small">Mantenimiento</span>
-                            <h2 class="fw-bold my-1 text-warning">#{habitacionBean.mantenimiento}</h2>
-                            <small class="text-muted">Servicio tÃ©cnico</small>
+                            <span class="text-muted text-uppercase fw-semibold small">Ingresos Reservas</span>
+                            <h2 class="fw-bold my-1 text-dark">S/ #{reservaBean.ingresosTotales}</h2>
+                            <small class="text-muted">Facturación acumulada activa</small>
                         </div>
                         <div class="stat-icon bg-warning bg-opacity-10 text-warning">
-                            <i class="bi bi-tools"></i>
+                            <i class="bi bi-cash-coin"></i>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- MÃ³dulos de la SoluciÃ³n (Cards Bootstrap) -->
+        <!-- Librerias de Apoyo Java Incorporadas (Seccion 3 del Informe) -->
+        <h4 class="fw-bold mb-3 text-dark">
+            <i class="bi bi-boxes text-warning me-2"></i> Recursos Java y Arquitectura Integrada (Consigna APF3)
+        </h4>
         <div class="row g-4">
-            <div class="col-md-4">
+            <div class="col-md-3">
                 <div class="card h-100 shadow-sm border-0">
                     <div class="card-body">
-                        <div class="d-inline-flex p-3 rounded-3 bg-primary bg-opacity-10 text-primary mb-3">
-                            <i class="bi bi-database-check fs-3"></i>
-                        </div>
-                        <h5 class="card-title fw-bold">Persistencia JDBC y DAO</h5>
-                        <p class="card-text text-muted">
-                            ConexiÃ³n de alto rendimiento con pool HikariCP sobre PostgreSQL. Cumplimiento del patrÃ³n arquitectÃ³nico DAO/DTO establecido en el APF1.
-                        </p>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="col-md-4">
-                <div class="card h-100 shadow-sm border-0">
-                    <div class="card-body">
-                        <div class="d-inline-flex p-3 rounded-3 bg-warning bg-opacity-10 text-warning mb-3">
-                            <i class="bi bi-code-slash fs-3"></i>
-                        </div>
-                        <h5 class="card-title fw-bold">Managed Beans y EL</h5>
-                        <p class="card-text text-muted">
-                            Enlace de datos bidireccional mediante Expression Language (EL: <code>#{habitacionBean...}</code>) y ciclo de vida de componentes JSF.
+                        <span class="badge bg-primary mb-2">3.1. Google Guava</span>
+                        <h6 class="card-title fw-bold">Preconditions, Cache &amp; Immutable</h6>
+                        <p class="card-text text-muted small mb-0">
+                            Validaciones defensivas (<code>Preconditions</code>), caché en memoria para catálogo (<code>CacheBuilder</code>) y colecciones inmutables (<code>ImmutableList</code>).
                         </p>
                     </div>
                 </div>
             </div>
 
-            <div class="col-md-4">
+            <div class="col-md-3">
                 <div class="card h-100 shadow-sm border-0">
                     <div class="card-body">
-                        <div class="d-inline-flex p-3 rounded-3 bg-info bg-opacity-10 text-info mb-3">
-                            <i class="bi bi-bootstrap-fill fs-3"></i>
-                        </div>
-                        <h5 class="card-title fw-bold">Bootstrap 5 Responsive</h5>
-                        <p class="card-text text-muted">
-                            Interfaz de usuario moderna con paleta institucional, adaptable a dispositivos mÃ³viles y compatible con componentes Facelets.
+                        <span class="badge bg-success mb-2">3.2. Apache POI</span>
+                        <h6 class="card-title fw-bold">Reportes Excel (.xlsx)</h6>
+                        <p class="card-text text-muted small mb-0">
+                            Generación dinámica de hojas de cálculo corporativas con <code>XSSFWorkbook</code> para exportar inventarios de habitaciones y reportes de reservas.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-3">
+                <div class="card h-100 shadow-sm border-0">
+                    <div class="card-body">
+                        <span class="badge bg-warning text-dark mb-2">3.3. Apache Commons</span>
+                        <h6 class="card-title fw-bold">Lang3 &amp; Collections4</h6>
+                        <p class="card-text text-muted small mb-0">
+                            Saneamiento de cadenas con <code>StringUtils</code>, generación de códigos únicos <code>WYN-2026-XXXXXX</code> con <code>RandomStringUtils</code> y <code>CollectionUtils</code>.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-3">
+                <div class="card h-100 shadow-sm border-0">
+                    <div class="card-body">
+                        <span class="badge bg-dark mb-2">3.4. Logback + TDD</span>
+                        <h6 class="card-title fw-bold">SLF4J, SOLID y JUnit 5</h6>
+                        <p class="card-text text-muted small mb-0">
+                            Auditoría estructurada en consola y archivo rotativo con <code>Logback</code>, principios SOLID con interfaces DAO y pruebas unitarias con <code>JUnit 5 + Mockito</code>.
                         </p>
                     </div>
                 </div>
