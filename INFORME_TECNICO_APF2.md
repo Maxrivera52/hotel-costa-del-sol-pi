@@ -10,9 +10,10 @@
 - **Título del Proyecto:** Sistema de Gestión Hotelera Empresarial — Hotel Wyndham Costa del Sol Chiclayo
 - **Módulo / Avance:** Avance de Proyecto Final 2 (APF2): Implementación con JSF y Frontend Frameworks (Bootstrap) sobre Persistencia Relacional PostgreSQL
 - **Integrantes y Códigos UTP:**
-  1. **Miguel Ángel Suárez Perdomo** — Código: `U23246385` (Backend & Frontend)
-  2. **Neo Injante Ventura Lorenzo** — Código: `U23245533` (Frontend & UI Design)
-  3. **Max Joel Rivera Morán** — Código: `U22242437` (Backend, Database & Arquitectura)
+  1. **Max Joel Rivera Morán** — Código: `U22242437` (Backend, Database & Arquitectura)
+  2. **Miguel Ángel Suárez Perdomo** — Código: `U23246385` (Backend & Frontend)
+  3. **Joel Vicente Cori Alarcón** — Código: `U23303991` (Persistencia DAO & Frontend JSF)
+  4. **Piero** — `piero_123aqp@hotmail.com` (Frontend JSF & Calidad)
 
 ---
 
@@ -154,11 +155,12 @@ Para la sustentación final de la Semana 18, la arquitectura consolidada en este
 - **URL del Repositorio:** `https://github.com/[ORGANIZACION_O_USUARIO]/hotel-costa-del-sol-apf2`
 - **Rama Oficial:** `main`
 
-### 7.2 Historial Colaborativo de Commits (3 Integrantes / 3 Meses)
-El repositorio refleja el trabajo continuo y distribuido de los 3 integrantes durante 10 semanas académicas (Agosto a Octubre 2026):
+### 7.2 Historial Colaborativo de Commits (4 Integrantes / 3 Meses)
+El repositorio refleja el trabajo continuo y distribuido de los 4 integrantes durante 10 semanas académicas (Agosto a Octubre 2026):
 - **Max Joel Rivera Morán:** Arquitectura Maven, esquema DDL PostgreSQL, pool HikariCP, DAOs y controladores FacesServlet.
 - **Miguel Ángel Suárez Perdomo:** Modelado DTO, servicios backend, desarrollo de Managed Beans (`LoginBean`, `HabitacionBean`) y lógica de validación.
-- **Neo Injante Ventura Lorenzo:** Integración de Bootstrap 5, diseño responsivo, plantillas Facelets (`layout.xhtml`) y componente dinámico `<h:dataTable>`.
+- **Joel Vicente Cori Alarcón:** Persistencia DAO, modelos DTO y vistas Facelets.
+- **Piero:** Integración de Bootstrap 5, diseño responsivo, plantillas Facelets (`layout.xhtml`) y componente dinámico `<h:dataTable>`.
 
 ![Captura 05: Historial y Contribuidores GitHub](docs/capturas/captura_05_commits_github.png)  
-*Figura 7.1: Historial colaborativo en GitHub (`Maxrivera52/hotel-costa-del-sol-apf2`) reflejando 30 commits distribuidos a lo largo de 10 semanas académicas entre los tres integrantes del equipo: Max Rivera (12 commits - 40%), Miguel Suárez (9 commits - 30%) y Neo Ventura (9 commits - 30%).*
+*Figura 7.1: Historial colaborativo en GitHub (`Maxrivera52/hotel-costa-del-sol-apf2`) reflejando los commits distribuidos a lo largo de 10 semanas académicas entre los cuatro integrantes del equipo: Max Rivera, Miguel Suárez, Joel Cori y Piero.*

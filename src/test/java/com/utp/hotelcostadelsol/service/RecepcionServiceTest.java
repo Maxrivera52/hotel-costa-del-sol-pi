@@ -55,7 +55,7 @@ class RecepcionServiceTest {
     @Test
     @DisplayName("Debe verificar pago y cambiar reserva de PENDIENTE a CONFIRMADA")
     void shouldVerifyPaymentAndConfirmReservation() {
-        ReservaDTO reserva = new ReservaDTO(4, "WYN-2026-X501JK", 3, "Neo Ventura", 5, "Suite",
+        ReservaDTO reserva = new ReservaDTO(4, "WYN-2026-X501JK", 3, "Joel Cori", 5, "Suite",
                 null, "Sin asignar", LocalDate.now(), LocalDate.now().plusDays(2),
                 2, new BigDecimal("1100.00"), BigDecimal.ZERO, new BigDecimal("1100.00"),
                 "PENDIENTE", "WEB", "");
@@ -72,7 +72,7 @@ class RecepcionServiceTest {
     @Test
     @DisplayName("Debe registrar Check-in ocupando la habitacion y entregando llave RFID")
     void shouldRegisterCheckinAndOccupyRoom() {
-        ReservaDTO reserva = new ReservaDTO(3, "WYN-2026-P201GH", 3, "Neo Ventura", 2, "Matrimonial",
+        ReservaDTO reserva = new ReservaDTO(3, "WYN-2026-P201GH", 3, "Joel Cori", 2, "Matrimonial",
                 3, "201", LocalDate.now(), LocalDate.now().plusDays(2),
                 2, new BigDecimal("360.00"), BigDecimal.ZERO, new BigDecimal("360.00"),
                 "CONFIRMADA", "WEB", "");
@@ -92,7 +92,7 @@ class RecepcionServiceTest {
     @Test
     @DisplayName("Debe registrar Check-out liberando la habitacion a DISPONIBLE y finalizando la reserva")
     void shouldRegisterCheckoutAndReleaseRoom() {
-        ReservaDTO reserva = new ReservaDTO(1, "WYN-2026-A102BC", 3, "Neo Ventura", 1, "Simple",
+        ReservaDTO reserva = new ReservaDTO(1, "WYN-2026-A102BC", 3, "Joel Cori", 1, "Simple",
                 2, "102", LocalDate.now().minusDays(1), LocalDate.now(),
                 1, new BigDecimal("120.00"), BigDecimal.ZERO, new BigDecimal("120.00"),
                 "CHECK_IN", "WEB", "");

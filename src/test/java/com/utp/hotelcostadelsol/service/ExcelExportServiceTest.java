@@ -48,7 +48,7 @@ class ExcelExportServiceTest {
     @DisplayName("Debe generar un libro Excel .xlsx valido para el reporte de reservas y totalizar ingresos")
     void shouldGenerateReservationsExcelWorkbook() throws Exception {
         List<ReservaDTO> reservas = List.of(
-                new ReservaDTO(1, "WYN-2026-TEST01", 3, "Neo Ventura", 2, "Matrimonial", 3, "201",
+                new ReservaDTO(1, "WYN-2026-TEST01", 3, "Joel Cori", 2, "Matrimonial", 3, "201",
                         LocalDate.of(2026, 10, 20), LocalDate.of(2026, 10, 22),
                         2, new BigDecimal("360.00"), BigDecimal.ZERO, new BigDecimal("360.00"),
                         "CONFIRMADA", "WEB", "")

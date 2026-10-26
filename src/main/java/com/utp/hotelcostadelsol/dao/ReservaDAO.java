@@ -33,22 +33,22 @@ public class ReservaDAO implements IReservaDAO {
     private static final List<ReservaDTO> MOCK_RESERVAS = new ArrayList<>();
 
     static {
-        MOCK_RESERVAS.add(new ReservaDTO(1, "WYN-2026-A102BC", 3, "Neo Ventura Lorenzo",
+        MOCK_RESERVAS.add(new ReservaDTO(1, "WYN-2026-A102BC", 3, "Joel Cori Alarcón",
                 1, "Habitacion Simple Confort", 2, "102",
                 LocalDate.now().minusDays(1), LocalDate.now().plusDays(1),
                 1, new BigDecimal("240.00"), BigDecimal.ZERO, new BigDecimal("240.00"),
                 "CHECK_IN", "WEB", "Viaje corporativo ejecutivo"));
-        MOCK_RESERVAS.add(new ReservaDTO(2, "WYN-2026-D401EF", 3, "Neo Ventura Lorenzo",
+        MOCK_RESERVAS.add(new ReservaDTO(2, "WYN-2026-D401EF", 3, "Joel Cori Alarcón",
                 4, "Suite Junior Costa del Sol", 7, "401",
                 LocalDate.now(), LocalDate.now().plusDays(3),
                 2, new BigDecimal("960.00"), new BigDecimal("80.00"), new BigDecimal("1040.00"),
                 "CHECK_IN", "RECEPCION", "Aniversario con vista panoramica"));
-        MOCK_RESERVAS.add(new ReservaDTO(3, "WYN-2026-P201GH", 3, "Neo Ventura Lorenzo",
+        MOCK_RESERVAS.add(new ReservaDTO(3, "WYN-2026-P201GH", 3, "Joel Cori Alarcón",
                 2, "Habitacion Matrimonial Deluxe", 3, "201",
                 LocalDate.now().plusDays(2), LocalDate.now().plusDays(5),
                 2, new BigDecimal("540.00"), BigDecimal.ZERO, new BigDecimal("540.00"),
                 "CONFIRMADA", "WEB", "Llegada en vuelo nocturno"));
-        MOCK_RESERVAS.add(new ReservaDTO(4, "WYN-2026-X501JK", 3, "Neo Ventura Lorenzo",
+        MOCK_RESERVAS.add(new ReservaDTO(4, "WYN-2026-X501JK", 3, "Joel Cori Alarcón",
                 5, "Suite Presidencial Real", null, "Sin asignar",
                 LocalDate.now().plusDays(4), LocalDate.now().plusDays(6),
                 3, new BigDecimal("1100.00"), new BigDecimal("120.00"), new BigDecimal("1220.00"),

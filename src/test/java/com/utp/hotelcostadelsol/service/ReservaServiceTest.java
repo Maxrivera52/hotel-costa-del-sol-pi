@@ -88,7 +88,7 @@ class ReservaServiceTest {
 
         ReservaDTO nueva = new ReservaDTO();
         nueva.setIdCliente(3);
-        nueva.setNombreCliente("Neo Ventura");
+        nueva.setNombreCliente("Joel Cori");
         nueva.setIdTipoHabitacion(4);
         nueva.setNumeroHuespedes(2);
         nueva.setFechaCheckin(LocalDate.now().plusDays(1));
