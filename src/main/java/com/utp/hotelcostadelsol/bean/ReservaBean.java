@@ -64,7 +64,7 @@ public class ReservaBean implements Serializable {
     private void reiniciarFormulario() {
         this.nuevaReserva = new ReservaDTO();
         this.nuevaReserva.setIdCliente(3);
-        this.nuevaReserva.setNombreCliente("Neo Ventura Lorenzo");
+        this.nuevaReserva.setNombreCliente("Joel Cori Alarcón");
         this.nuevaReserva.setIdTipoHabitacion(2);
         this.nuevaReserva.setNumeroHuespedes(2);
         this.nuevaReserva.setPrecioServiciosExtra(BigDecimal.ZERO);

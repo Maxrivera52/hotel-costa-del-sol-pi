@@ -29,9 +29,9 @@ public class EstanciaDAO {
     private static final List<EstanciaDTO> MOCK_ESTANCIAS = new ArrayList<>();
 
     static {
-        MOCK_ESTANCIAS.add(new EstanciaDTO(1, 1, "WYN-2026-A102BC", "Neo Ventura Lorenzo", "102",
+        MOCK_ESTANCIAS.add(new EstanciaDTO(1, 1, "WYN-2026-A102BC", "Joel Cori Alarcón", "102",
                 LocalDateTime.now().minusDays(1), null, "KEY-RFID-102A", new BigDecimal("35.00"), "Huesped instalado sin novedades"));
-        MOCK_ESTANCIAS.add(new EstanciaDTO(2, 2, "WYN-2026-D401EF", "Neo Ventura Lorenzo", "401",
+        MOCK_ESTANCIAS.add(new EstanciaDTO(2, 2, "WYN-2026-D401EF", "Joel Cori Alarcón", "401",
                 LocalDateTime.now().minusHours(5), null, "KEY-RFID-401B", new BigDecimal("80.00"), "Amenidades VIP entregadas en Suite Junior"));
     }
 
