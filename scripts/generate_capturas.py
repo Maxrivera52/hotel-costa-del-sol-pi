@@ -1198,7 +1198,7 @@ html_04 = r"""<!DOCTYPE html>
       <div class="alert alert-success d-flex align-items-center justify-content-between py-2 px-3 mb-3 shadow-sm border-success">
         <div class="d-flex align-items-center gap-2">
           <i class="bi bi-database-check fs-5 text-success"></i>
-          <span><strong>Conexión Activa a PostgreSQL:</strong> <code>jdbc:postgresql://localhost:5432/hotel_costa_del_sol</code> &bull; Pool HikariCP (10 conexiones activas).</span>
+          <span><strong>Conexión Activa a PostgreSQL:</strong> <code>jdbc:postgresql://localhost:5432/hotel_costa_sol_pi</code> &bull; Pool HikariCP (10 conexiones activas).</span>
         </div>
         <span class="badge bg-success">Status: OK</span>
       </div>

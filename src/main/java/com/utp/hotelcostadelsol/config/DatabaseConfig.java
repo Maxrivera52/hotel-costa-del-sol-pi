@@ -39,7 +39,7 @@ public final class DatabaseConfig {
             }
 
             String driver = StringUtils.defaultIfBlank(prop.getProperty("db.driver"), "org.postgresql.Driver");
-            String url = StringUtils.defaultIfBlank(prop.getProperty("db.url"), "jdbc:postgresql://localhost:5432/hotel_costa_del_sol");
+            String url = StringUtils.defaultIfBlank(prop.getProperty("db.url"), "jdbc:postgresql://localhost:5432/hotel_costa_sol_pi");
             String user = StringUtils.defaultIfBlank(prop.getProperty("db.user"), "postgres");
             String password = prop.getProperty("db.password", "1234");
 

@@ -1,5 +1,5 @@
 -- ============================================================================
--- Base de Datos: hotel_costa_del_sol (PostgreSQL 15+)
+-- Base de Datos: hotel_costa_sol_pi (PostgreSQL 15+)
 -- Proyecto Integrador (PI)
 -- Integrantes: Miguel Suarez, Neo Ventura, Max Rivera
 -- ============================================================================
