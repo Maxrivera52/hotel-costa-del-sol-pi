@@ -7,7 +7,7 @@ import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 
 /**
- * DTO que representa una reserva hotelera en el alcance del 70% (APF3),
+ * DTO que representa una reserva hotelera en el Proyecto Integrador,
  * incluyendo informacion del huesped, habitacion asignada, fechas de estancia y montos.
  */
 public class ReservaDTO implements Serializable {

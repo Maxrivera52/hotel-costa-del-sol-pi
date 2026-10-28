@@ -1,4 +1,4 @@
-# Hotel Wyndham Costa del Sol Chiclayo - APF3 (70% - Proyecto Integrador)
+# Hotel Wyndham Costa del Sol Chiclayo - Proyecto Integrador
 
 ## Avance de Proyecto Final 3 - Semana 12
 **Ciclo:** 2026 - Ciclo 2 Agosto (Perú) — Universidad Tecnológica del Perú (UTP)
@@ -40,7 +40,7 @@
    - `RandomStringUtils` para generación de códigos únicos de reserva (`WYN-2026-XXXXXX`).
    - `CollectionUtils` para validación segura de colecciones.
 4. **3.4. Logback (`ch.qos.logback:logback-classic:1.5.3` + `slf4j-api:2.0.12`):**
-   - Registro estructurado de eventos operativos, errores SQL y trazas de auditoría en consola y archivo rotativo (`logs/hotel-costa-del-sol-apf3.log`) configurado en `src/main/resources/logback.xml`.
+   - Registro estructurado de eventos operativos, errores SQL y trazas de auditoría en consola y archivo rotativo (`logs/hotel-costa-del-sol-pi.log`) configurado en `src/main/resources/logback.xml`.
 
 ---
 

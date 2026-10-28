@@ -23,7 +23,7 @@ import java.util.stream.Collectors;
 
 /**
  * Managed Bean (@ViewScoped) para el modulo de Recepcion: Check-in, Check-out,
- * Verificacion de Pagos y Bitacora de Auditoria (Alcance 70% - APF3).
+ * Verificacion de Pagos y Bitacora de Auditoria (Proyecto Integrador).
  */
 @Named("recepcionBean")
 @ViewScoped
