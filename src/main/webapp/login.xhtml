@@ -4,7 +4,7 @@
                 xmlns:ui="jakarta.faces.facelets"
                 template="/WEB-INF/templates/layout.xhtml">
 
-    <ui:define name="title">Hotel Costa del Sol - Iniciar Sesion</ui:define>
+    <ui:define name="title">Hotel Costa del Sol - Iniciar Sesión</ui:define>
 
     <ui:define name="content">
         <div class="row justify-content-center my-4">
@@ -12,7 +12,7 @@
                 <div class="card shadow border-0 rounded-4">
                     <div class="card-header bg-dark text-white text-center py-4 rounded-top-4" style="background-color: #0a2540 !important;">
                         <i class="bi bi-shield-lock-fill fs-1 text-warning mb-2 d-block"></i>
-                        <h4 class="fw-bold mb-0">AutenticaciÃ³n de Usuarios - Costa del Sol</h4>
+                        <h4 class="fw-bold mb-0">Autenticación de Usuarios - Costa del Sol</h4>
                         <small class="text-light-50">Acceso seguro con JSF Managed Bean</small>
                     </div>
                     
@@ -34,37 +34,20 @@
 
                             <div class="mb-4">
                                 <label for="password" class="form-label fw-semibold text-secondary">
-                                    <i class="bi bi-key me-1"></i> ContraseÃ±a
+                                    <i class="bi bi-key me-1"></i> Contraseña
                                 </label>
                                 <h:inputSecret id="password" 
                                                value="#{loginBean.password}" 
                                                styleClass="form-control form-control-lg"
                                                required="true"
-                                               requiredMessage="Debe ingresar su contraseÃ±a."/>
+                                               requiredMessage="Debe ingresar su contraseña."/>
                                 <h:message for="password" styleClass="text-danger small"/>
                             </div>
 
                             <h:commandButton value="Ingresar al Sistema" 
                                              action="#{loginBean.autenticar}" 
-                                             styleClass="btn btn-warning btn-lg w-100 fw-bold shadow-sm mb-3"/>
+                                             styleClass="btn btn-warning btn-lg w-100 fw-bold shadow-sm"/>
                         </h:form>
-
-                        <div class="bg-light p-3 rounded-3 border">
-                            <h6 class="fw-bold text-dark mb-2 small">
-                                <i class="bi bi-info-circle-fill text-primary me-1"></i> Credenciales de Prueba (APF2):
-                            </h6>
-                            <div class="row g-2 small text-muted">
-                                <div class="col-12">
-                                    <strong>Admin:</strong> <code>admin</code> / <code>admin123</code> (Max Rivera)
-                                </div>
-                                <div class="col-12">
-                                    <strong>RecepciÃ³n:</strong> <code>recepcion</code> / <code>recep123</code> (Miguel SuÃ¡rez)
-                                </div>
-                                <div class="col-12">
-                                    <strong>Cliente:</strong> <code>cliente</code> / <code>client123</code> (Neo Ventura)
-                                </div>
-                            </div>
-                        </div>
                     </div>
                 </div>
             </div>

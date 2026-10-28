@@ -27,7 +27,7 @@ import java.util.Map;
 
 /**
  * Managed Bean (@ViewScoped) para el modulo de Reservas, Cotizacion Dinamica
- * y Exportacion de Reportes Excel con Apache POI (Alcance 70% - APF3).
+ * y Exportacion de Reportes Excel con Apache POI (Proyecto Integrador).
  */
 @Named("reservaBean")
 @ViewScoped

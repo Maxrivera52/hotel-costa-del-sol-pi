@@ -13,9 +13,9 @@
 
     <!-- Appender de Archivo Rotativo para Seguridad y Auditoria -->
     <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <file>${LOG_DIR}/hotel-costa-del-sol-apf3.log</file>
+        <file>${LOG_DIR}/hotel-costa-del-sol-pi.log</file>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <fileNamePattern>${LOG_DIR}/hotel-costa-del-sol-apf3.%d{yyyy-MM-dd}.log</fileNamePattern>
+            <fileNamePattern>${LOG_DIR}/hotel-costa-del-sol-pi.%d{yyyy-MM-dd}.log</fileNamePattern>
             <maxHistory>15</maxHistory>
             <totalSizeCap>50MB</totalSizeCap>
         </rollingPolicy>

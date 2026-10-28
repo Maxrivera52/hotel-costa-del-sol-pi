@@ -1,6 +1,6 @@
 -- ============================================================================
 -- Base de Datos: hotel_costa_del_sol (PostgreSQL 15+)
--- Avance de Proyecto Final 3 (APF3 - Semana 12 - Alcance 70%)
+-- Proyecto Integrador (PI)
 -- Integrantes: Miguel Suarez, Neo Ventura, Max Rivera
 -- ============================================================================
 
@@ -56,7 +56,7 @@ CREATE TABLE habitaciones (
     observaciones VARCHAR(255)
 );
 
--- 5. Reservas (Ampliado APF3 - 70%)
+-- 5. Reservas
 CREATE TABLE reservas (
     id_reserva SERIAL PRIMARY KEY,
     codigo_reserva VARCHAR(25) UNIQUE NOT NULL,
@@ -76,7 +76,7 @@ CREATE TABLE reservas (
     fecha_creacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
--- 6. Estancias Check-in / Check-out (APF3 - 70%)
+-- 6. Estancias Check-in / Check-out
 CREATE TABLE estancias (
     id_estancia SERIAL PRIMARY KEY,
     id_reserva INT UNIQUE NOT NULL REFERENCES reservas(id_reserva) ON DELETE CASCADE,
@@ -89,7 +89,7 @@ CREATE TABLE estancias (
     id_recepcionista_checkout INT REFERENCES usuarios(id_usuario)
 );
 
--- 7. Pagos y Verificacion de Vouchers (APF3 - 70%)
+-- 7. Pagos y Verificacion de Vouchers
 CREATE TABLE pagos (
     id_pago SERIAL PRIMARY KEY,
     id_reserva INT NOT NULL REFERENCES reservas(id_reserva) ON DELETE CASCADE,
@@ -102,7 +102,7 @@ CREATE TABLE pagos (
     fecha_pago TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
--- 8. Bitacora de Auditoria y Seguridad (APF3 - 70%)
+-- 8. Bitacora de Auditoria y Seguridad
 CREATE TABLE auditoria (
     id_auditoria SERIAL PRIMARY KEY,
     id_usuario INT REFERENCES usuarios(id_usuario),
@@ -161,6 +161,6 @@ INSERT INTO pagos (id_reserva, monto, metodo_pago, numero_operacion, comprobante
 (3, 540.00, 'YAPE_PLIN', 'YP-778899', 'VOUCHER-201.png', 'VERIFICADO', 2);
 
 INSERT INTO auditoria (id_usuario, modulo, accion, descripcion, ip_address) VALUES
-(1, 'SEGURIDAD', 'INIT_SYSTEM', 'Inicializacion de arquitectura MVC, DAO, SOLID y librerias APF3', '127.0.0.1'),
+(1, 'SEGURIDAD', 'INIT_SYSTEM', 'Inicializacion de arquitectura MVC, DAO, SOLID y componentes del Proyecto Integrador', '127.0.0.1'),
 (2, 'RECEPCION', 'CHECK_IN', 'Check-in registrado para reserva WYN-2026-A102BC en habitacion 102', '192.168.1.15'),
 (2, 'RECEPCION', 'VERIFICAR_PAGO', 'Pago verificado por S/ 1040.00 para reserva WYN-2026-D401EF', '192.168.1.15');

@@ -26,11 +26,11 @@ public class LoginBean implements Serializable {
             this.usuarioLogueado = user;
             this.autenticado = true;
             FacesContext.getCurrentInstance().addMessage(null,
-                new FacesMessage(FacesMessage.SEVERITY_INFO, "Bienvenido", "Sesion iniciada como " + user.getNombreCompleto()));
+                new FacesMessage(FacesMessage.SEVERITY_INFO, "Bienvenido", "Sesión iniciada como " + user.getNombreCompleto()));
             return "habitaciones.xhtml?faces-redirect=true";
         } else {
             FacesContext.getCurrentInstance().addMessage(null,
-                new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error de Acceso", "Usuario o contraseÃ±a incorrectos."));
+                new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error de Acceso", "Usuario o contraseña incorrectos."));
             return null;
         }
     }

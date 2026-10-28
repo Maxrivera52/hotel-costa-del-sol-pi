@@ -30,7 +30,7 @@ public class AuditoriaDAO {
 
     static {
         MOCK_AUDITORIA.add(new AuditoriaDTO(1, 1, "admin", "SEGURIDAD", "INIT_SYSTEM",
-                "Inicializacion de arquitectura MVC, DAO, SOLID y librerias APF3", "127.0.0.1", LocalDateTime.now().minusHours(4)));
+                "Inicialización de arquitectura MVC, DAO, SOLID y componentes del Proyecto Integrador", "127.0.0.1", LocalDateTime.now().minusHours(4)));
         MOCK_AUDITORIA.add(new AuditoriaDTO(2, 2, "recepcion", "RECEPCION", "CHECK_IN",
                 "Check-in registrado para reserva WYN-2026-A102BC en habitacion 102", "192.168.1.15", LocalDateTime.now().minusHours(2)));
         MOCK_AUDITORIA.add(new AuditoriaDTO(3, 2, "recepcion", "RECEPCION", "VERIFICAR_PAGO",

@@ -62,7 +62,7 @@ public final class DatabaseConfig {
                 LOGGER.info("Conectado exitosamente al pool PostgreSQL/HikariCP en {}", url);
             }
         } catch (Exception ex) {
-            LOGGER.info("PostgreSQL local no detectado en puerto 5432 ({}). Activando modo resiliente en memoria para evaluacion APF3.", ex.getMessage());
+            LOGGER.info("PostgreSQL local no detectado en puerto 5432 ({}). Activando modo resiliente en memoria para evaluacion/demostracion.", ex.getMessage());
             dbAvailable = false;
         }
     }
