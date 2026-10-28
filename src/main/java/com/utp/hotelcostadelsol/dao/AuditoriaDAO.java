@@ -23,7 +23,7 @@ import java.util.List;
  * DAO para el registro y consulta de la bitacora de auditoria de seguridad.
  * Aplica Logback (SLF4J), Google Guava (Preconditions, ImmutableList) y Apache Commons Lang3.
  */
-public class AuditoriaDAO {
+public class AuditoriaDAO implements IAuditoriaDAO {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AuditoriaDAO.class);
     private static final List<AuditoriaDTO> MOCK_AUDITORIA = new ArrayList<>();

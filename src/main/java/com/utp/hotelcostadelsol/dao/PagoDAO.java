@@ -22,7 +22,7 @@ import java.util.List;
 /**
  * DAO para el registro y verificacion de pagos y vouchers de reservas.
  */
-public class PagoDAO {
+public class PagoDAO implements IPagoDAO {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(PagoDAO.class);
     private static final List<PagoDTO> MOCK_PAGOS = new ArrayList<>();

@@ -23,7 +23,7 @@ import java.util.Optional;
 /**
  * DAO para la gestion de estancias presenciales (Check-in y Check-out).
  */
-public class EstanciaDAO {
+public class EstanciaDAO implements IEstanciaDAO {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(EstanciaDAO.class);
     private static final List<EstanciaDTO> MOCK_ESTANCIAS = new ArrayList<>();
