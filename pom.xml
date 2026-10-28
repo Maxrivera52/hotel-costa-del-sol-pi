@@ -30,16 +30,30 @@
             <scope>provided</scope>
         </dependency>
 
-        <!-- Jakarta Faces 4.0 API y Mojarra Implementation -->
+        <!-- CDI API & EL API para Apache Tomcat -->
         <dependency>
-            <groupId>jakarta.faces</groupId>
-            <artifactId>jakarta.faces-api</artifactId>
+            <groupId>jakarta.enterprise</groupId>
+            <artifactId>jakarta.enterprise.cdi-api</artifactId>
             <version>4.1.0-M1</version>
         </dependency>
+        <dependency>
+            <groupId>jakarta.enterprise</groupId>
+            <artifactId>jakarta.enterprise.cdi-el-api</artifactId>
+            <version>4.1.0-M1</version>
+        </dependency>
+
+        <!-- Jakarta Faces Mojarra Implementation -->
         <dependency>
             <groupId>org.glassfish</groupId>
             <artifactId>jakarta.faces</artifactId>
             <version>4.1.0-M1</version>
+        </dependency>
+
+        <!-- Weld CDI Runtime para Apache Tomcat -->
+        <dependency>
+            <groupId>org.jboss.weld.servlet</groupId>
+            <artifactId>weld-servlet-shaded</artifactId>
+            <version>5.1.2.Final</version>
         </dependency>
 
         <!-- Driver PostgreSQL JDBC -->
