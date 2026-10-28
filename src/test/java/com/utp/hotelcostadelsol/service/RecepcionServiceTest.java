@@ -1,10 +1,10 @@
 package com.utp.hotelcostadelsol.service;
 
-import com.utp.hotelcostadelsol.dao.AuditoriaDAO;
-import com.utp.hotelcostadelsol.dao.EstanciaDAO;
+import com.utp.hotelcostadelsol.dao.IAuditoriaDAO;
+import com.utp.hotelcostadelsol.dao.IEstanciaDAO;
 import com.utp.hotelcostadelsol.dao.IHabitacionDAO;
+import com.utp.hotelcostadelsol.dao.IPagoDAO;
 import com.utp.hotelcostadelsol.dao.IReservaDAO;
-import com.utp.hotelcostadelsol.dao.PagoDAO;
 import com.utp.hotelcostadelsol.model.dto.EstanciaDTO;
 import com.utp.hotelcostadelsol.model.dto.HabitacionDTO;
 import com.utp.hotelcostadelsol.model.dto.PagoDTO;
@@ -37,13 +37,13 @@ class RecepcionServiceTest {
     private IHabitacionDAO habitacionDAO;
 
     @Mock
-    private EstanciaDAO estanciaDAO;
+    private IEstanciaDAO estanciaDAO;
 
     @Mock
-    private PagoDAO pagoDAO;
+    private IPagoDAO pagoDAO;
 
     @Mock
-    private AuditoriaDAO auditoriaDAO;
+    private IAuditoriaDAO auditoriaDAO;
 
     private RecepcionService recepcionService;
 

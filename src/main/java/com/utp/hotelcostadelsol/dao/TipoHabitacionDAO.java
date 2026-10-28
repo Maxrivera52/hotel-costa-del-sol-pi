@@ -17,7 +17,7 @@ import java.util.Optional;
 /**
  * DAO para el catalogo de categorias de habitacion (TipoHabitacionDTO).
  */
-public class TipoHabitacionDAO {
+public class TipoHabitacionDAO implements ITipoHabitacionDAO {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(TipoHabitacionDAO.class);
     private static final List<TipoHabitacionDTO> MOCK_TIPOS = new ArrayList<>();

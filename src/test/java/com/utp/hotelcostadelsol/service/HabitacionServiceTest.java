@@ -1,7 +1,7 @@
 package com.utp.hotelcostadelsol.service;
 
 import com.utp.hotelcostadelsol.dao.IHabitacionDAO;
-import com.utp.hotelcostadelsol.dao.TipoHabitacionDAO;
+import com.utp.hotelcostadelsol.dao.ITipoHabitacionDAO;
 import com.utp.hotelcostadelsol.model.dto.HabitacionDTO;
 import com.utp.hotelcostadelsol.model.dto.TipoHabitacionDTO;
 import org.junit.jupiter.api.BeforeEach;
@@ -27,7 +27,7 @@ class HabitacionServiceTest {
     private IHabitacionDAO habitacionDAO;
 
     @Mock
-    private TipoHabitacionDAO tipoHabitacionDAO;
+    private ITipoHabitacionDAO tipoHabitacionDAO;
 
     private HabitacionService habitacionService;
 

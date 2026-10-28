@@ -5,6 +5,7 @@ import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import com.utp.hotelcostadelsol.dao.HabitacionDAO;
 import com.utp.hotelcostadelsol.dao.IHabitacionDAO;
+import com.utp.hotelcostadelsol.dao.ITipoHabitacionDAO;
 import com.utp.hotelcostadelsol.dao.TipoHabitacionDAO;
 import com.utp.hotelcostadelsol.model.dto.HabitacionDTO;
 import com.utp.hotelcostadelsol.model.dto.TipoHabitacionDTO;
@@ -29,16 +30,16 @@ public class HabitacionService {
     private static final String CACHE_KEY_TIPOS = "CATALOGO_TIPOS_HABITACION";
 
     private final IHabitacionDAO habitacionDAO;
-    private final TipoHabitacionDAO tipoHabitacionDAO;
+    private final ITipoHabitacionDAO tipoHabitacionDAO;
     private final Cache<String, List<TipoHabitacionDTO>> catalogoCache;
 
     public HabitacionService() {
         this(new HabitacionDAO(), new TipoHabitacionDAO());
     }
 
-    public HabitacionService(IHabitacionDAO habitacionDAO, TipoHabitacionDAO tipoHabitacionDAO) {
+    public HabitacionService(IHabitacionDAO habitacionDAO, ITipoHabitacionDAO tipoHabitacionDAO) {
         this.habitacionDAO = Preconditions.checkNotNull(habitacionDAO, "IHabitacionDAO requerido");
-        this.tipoHabitacionDAO = Preconditions.checkNotNull(tipoHabitacionDAO, "TipoHabitacionDAO requerido");
+        this.tipoHabitacionDAO = Preconditions.checkNotNull(tipoHabitacionDAO, "ITipoHabitacionDAO requerido");
         this.catalogoCache = CacheBuilder.newBuilder()
                 .maximumSize(10)
                 .expireAfterWrite(10, TimeUnit.MINUTES)

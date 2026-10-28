@@ -1,6 +1,7 @@
 package com.utp.hotelcostadelsol.service;
 
 import com.utp.hotelcostadelsol.dao.AuditoriaDAO;
+import com.utp.hotelcostadelsol.dao.IAuditoriaDAO;
 import com.utp.hotelcostadelsol.dao.UsuarioDAO;
 import com.utp.hotelcostadelsol.model.dto.AuditoriaDTO;
 import com.utp.hotelcostadelsol.model.dto.UsuarioDTO;
@@ -19,13 +20,13 @@ public class AuthService {
     private static final Logger LOGGER = LoggerFactory.getLogger(AuthService.class);
 
     private final UsuarioDAO usuarioDAO;
-    private final AuditoriaDAO auditoriaDAO;
+    private final IAuditoriaDAO auditoriaDAO;
 
     public AuthService() {
         this(new UsuarioDAO(), new AuditoriaDAO());
     }
 
-    public AuthService(UsuarioDAO usuarioDAO, AuditoriaDAO auditoriaDAO) {
+    public AuthService(UsuarioDAO usuarioDAO, IAuditoriaDAO auditoriaDAO) {
         this.usuarioDAO = usuarioDAO;
         this.auditoriaDAO = auditoriaDAO;
     }

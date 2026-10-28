@@ -4,8 +4,10 @@ import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableMap;
 import com.utp.hotelcostadelsol.dao.AuditoriaDAO;
 import com.utp.hotelcostadelsol.dao.HabitacionDAO;
+import com.utp.hotelcostadelsol.dao.IAuditoriaDAO;
 import com.utp.hotelcostadelsol.dao.IHabitacionDAO;
 import com.utp.hotelcostadelsol.dao.IReservaDAO;
+import com.utp.hotelcostadelsol.dao.ITipoHabitacionDAO;
 import com.utp.hotelcostadelsol.dao.ReservaDAO;
 import com.utp.hotelcostadelsol.dao.TipoHabitacionDAO;
 import com.utp.hotelcostadelsol.model.dto.AuditoriaDTO;
@@ -35,20 +37,20 @@ public class ReservaService {
     private static final Logger LOGGER = LoggerFactory.getLogger(ReservaService.class);
 
     private final IReservaDAO reservaDAO;
-    private final TipoHabitacionDAO tipoHabitacionDAO;
+    private final ITipoHabitacionDAO tipoHabitacionDAO;
     private final IHabitacionDAO habitacionDAO;
-    private final AuditoriaDAO auditoriaDAO;
+    private final IAuditoriaDAO auditoriaDAO;
 
     public ReservaService() {
         this(new ReservaDAO(), new TipoHabitacionDAO(), new HabitacionDAO(), new AuditoriaDAO());
     }
 
-    public ReservaService(IReservaDAO reservaDAO, TipoHabitacionDAO tipoHabitacionDAO,
-                          IHabitacionDAO habitacionDAO, AuditoriaDAO auditoriaDAO) {
+    public ReservaService(IReservaDAO reservaDAO, ITipoHabitacionDAO tipoHabitacionDAO,
+                          IHabitacionDAO habitacionDAO, IAuditoriaDAO auditoriaDAO) {
         this.reservaDAO = Preconditions.checkNotNull(reservaDAO, "IReservaDAO requerido");
-        this.tipoHabitacionDAO = Preconditions.checkNotNull(tipoHabitacionDAO, "TipoHabitacionDAO requerido");
+        this.tipoHabitacionDAO = Preconditions.checkNotNull(tipoHabitacionDAO, "ITipoHabitacionDAO requerido");
         this.habitacionDAO = Preconditions.checkNotNull(habitacionDAO, "IHabitacionDAO requerido");
-        this.auditoriaDAO = Preconditions.checkNotNull(auditoriaDAO, "AuditoriaDAO requerido");
+        this.auditoriaDAO = Preconditions.checkNotNull(auditoriaDAO, "IAuditoriaDAO requerido");
     }
 
     /**
