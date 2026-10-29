@@ -48,10 +48,10 @@ function Execute-DbScript {
 
     Write-Host "==> Preparando base de datos '$targetDb'..." -ForegroundColor Cyan
 
-    # Terminar conexiones activas y recrear BD
-    & $psql -U $User -h $HostName -p $Port -d postgres -c "SELECT pg_terminate_backend(pid) FROM pg_stat_activity WHERE datname = '$targetDb' AND pid <> pg_backend_pid();" | Out-Null
-    & $psql -U $User -h $HostName -p $Port -d postgres -c "DROP DATABASE IF EXISTS $targetDb;" | Out-Null
-    & $psql -U $User -h $HostName -p $Port -d postgres -c "CREATE DATABASE $targetDb ENCODING 'UTF8';" | Out-Null
+    $dbExists = (& $psql -U $User -h $HostName -p $Port -d postgres -tAc "SELECT 1 FROM pg_database WHERE datname = '$targetDb';").Trim()
+    if ($dbExists -ne "1") {
+        & $psql -U $User -h $HostName -p $Port -d postgres -c "CREATE DATABASE $targetDb ENCODING 'UTF8';" | Out-Null
+    }
 
     Write-Host "==> Ejecutando script DDL/DML ($sqlFile)..." -ForegroundColor Yellow
     & $psql -U $User -h $HostName -p $Port -d $targetDb -f $sqlFile | Out-Null
