@@ -4,153 +4,293 @@
                 xmlns:ui="jakarta.faces.facelets"
                 template="/WEB-INF/templates/layout.xhtml">
 
-    <ui:define name="title">Hotel Costa del Sol - Dashboard</ui:define>
+    <ui:define name="title">Hotel Wyndham Costa del Sol Chiclayo - Inicio</ui:define>
 
-    <ui:define name="content">
-        <!-- Hero Header -->
-        <div class="p-4 p-md-5 mb-4 rounded-3 text-white shadow-sm" style="background: linear-gradient(135deg, #0a2540 0%, #1e3a8a 100%);">
-            <div class="container-fluid py-2">
-                <div class="d-flex flex-wrap align-items-center gap-2 mb-2">
-                    <span class="badge bg-info text-dark px-3 py-1">MVC + TDD + DAO + SOLID</span>
-                    <span class="text-light-50 small">Google Guava • Apache POI • Apache Commons • Logback</span>
-                </div>
-                <h1 class="display-5 fw-bold">Sistema de Gestión Hotelera</h1>
-                <p class="col-md-10 fs-5 text-light-emphasis">
-                    Plataforma empresarial para el Hotel Wyndham Costa del Sol Chiclayo. Integra gestión de inventario, cotizador dinámico de reservas, operaciones de recepción (Check-in/Check-out), exportación Excel con Apache POI y auditoría de seguridad.
-                </p>
-                <div class="d-flex flex-wrap gap-2 mt-3">
-                    <h:link outcome="reservas.xhtml" styleClass="btn btn-warning btn-lg fw-semibold px-4">
-                        <i class="bi bi-calendar2-check me-2"></i> Gestionar Reservas y Cotizador
-                    </h:link>
-                    <h:link outcome="recepcion.xhtml" styleClass="btn btn-light btn-lg fw-semibold px-4">
-                        <i class="bi bi-key-fill me-2"></i> Recepción (Check-in / Check-out)
-                    </h:link>
-                    <h:link outcome="habitaciones.xhtml" styleClass="btn btn-outline-light btn-lg px-4">
-                        <i class="bi bi-door-open me-2"></i> Inventario Habitaciones
-                    </h:link>
-                </div>
-            </div>
-        </div>
+    <ui:define name="extraHead">
+        <link rel="stylesheet" href="#{request.contextPath}/styles/inicio.css"/>
+    </ui:define>
 
-        <!-- KPIs de Inventario y Reservas -->
-        <h3 class="fw-bold mb-3 text-dark">
-            <i class="bi bi-speedometer2 text-primary me-2"></i> Indicadores Operativos en Tiempo Real
-        </h3>
-        
-        <div class="row g-3 mb-4">
-            <div class="col-12 col-sm-6 col-xl-3">
-                <div class="card card-stat shadow-sm border-start border-primary border-4 p-3 bg-white">
-                    <div class="d-flex align-items-center justify-content-between">
-                        <div>
-                            <span class="text-muted text-uppercase fw-semibold small">Total Habitaciones</span>
-                            <h2 class="fw-bold my-1 text-primary">#{habitacionBean.totalHabitaciones}</h2>
-                            <small class="text-success fw-medium">#{habitacionBean.disponibles} disponibles ahora</small>
-                        </div>
-                        <div class="stat-icon bg-primary bg-opacity-10 text-primary">
-                            <i class="bi bi-door-open-fill"></i>
-                        </div>
-                    </div>
+    <ui:define name="fullWidthContent">
+        <!-- ===== AUDIO DE AMBIENTE (controlado por JS) ===== -->
+        <audio id="audioAmbiente" src="#{request.contextPath}/audio/musicadeinicio.mp3" loop="loop"></audio>
+
+        <!-- ===== HERO: VIDEO A PANTALLA COMPLETA (Solo Visitantes y Clientes, o Banner Compacto para Staff) ===== -->
+        <section id="hero-video" style="#{loginBean.esPersonalOperativo ? 'height: 52vh;' : 'height: 88vh;'}">
+            <video id="videoInicio" autoplay="autoplay" muted="muted" loop="loop" playsinline="playsinline">
+                <source src="#{request.contextPath}/video/Hotel_inicio.mp4" type="video/mp4"/>
+            </video>
+            <div id="hero-overlay">
+                <h1>HOTEL WYNDHAM<br/>COSTA DEL SOL CHICLAYO</h1>
+                <p>Comodidad y lujo, es nuestra prioridad</p>
+                <div class="d-flex flex-wrap justify-content-center gap-3">
+                    <a href="#contenido-principal" id="btn-explorar">Explorar Hotel</a>
+                    <h:panelGroup rendered="#{!loginBean.autenticado}">
+                        <h:link outcome="login.xhtml" styleClass="btn btn-outline-light btn-lg rounded-pill px-4 fw-bold">
+                            <i class="bi bi-calendar2-check me-2"></i> Reservar Ahora
+                        </h:link>
+                    </h:panelGroup>
+                    <h:panelGroup rendered="#{loginBean.esCliente}">
+                        <h:link outcome="reservas.xhtml" styleClass="btn btn-outline-light btn-lg rounded-pill px-4 fw-bold">
+                            <i class="bi bi-calendar2-check me-2"></i> Cotizar Mi Reserva
+                        </h:link>
+                    </h:panelGroup>
                 </div>
             </div>
+        </section>
 
-            <div class="col-12 col-sm-6 col-xl-3">
-                <div class="card card-stat shadow-sm border-start border-success border-4 p-3 bg-white">
-                    <div class="d-flex align-items-center justify-content-between">
-                        <div>
-                            <span class="text-muted text-uppercase fw-semibold small">Reservas Registradas</span>
-                            <h2 class="fw-bold my-1 text-success">#{reservaBean.totalReservas}</h2>
-                            <small class="text-muted">#{reservaBean.confirmadas} confirmadas / #{reservaBean.pendientes} pendientes</small>
+        <!-- ===== PANEL EJECUTIVO Y KPIs (EXCLUSIVO PARA ADMIN Y RECEPCIÓN) ===== -->
+        <h:panelGroup rendered="#{loginBean.esPersonalOperativo}">
+            <div class="container my-5">
+                <div class="p-4 p-md-5 mb-4 rounded-3 text-white shadow-sm" style="background: linear-gradient(135deg, #0a2540 0%, #1e3a8a 100%);">
+                    <div class="container-fluid py-1">
+                        <div class="d-flex flex-wrap align-items-center gap-2 mb-2">
+                            <span class="badge bg-warning text-dark px-3 py-1 fw-bold">PANEL EJECUTIVO (#{loginBean.esAdmin ? 'ADMINISTRADOR' : 'RECEPCIÓN'})</span>
+                            <span class="badge bg-info text-dark px-3 py-1">MVC + TDD + DAO + SOLID</span>
+                            <span class="text-light-50 small">Google Guava • Apache POI • Apache Commons • Logback</span>
                         </div>
-                        <div class="stat-icon bg-success bg-opacity-10 text-success">
-                            <i class="bi bi-calendar-check-fill"></i>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-12 col-sm-6 col-xl-3">
-                <div class="card card-stat shadow-sm border-start border-danger border-4 p-3 bg-white">
-                    <div class="d-flex align-items-center justify-content-between">
-                        <div>
-                            <span class="text-muted text-uppercase fw-semibold small">Estancias en Curso</span>
-                            <h2 class="fw-bold my-1 text-danger">#{reservaBean.enCheckin}</h2>
-                            <small class="text-danger fw-medium">Huéspedes con Check-in activo</small>
-                        </div>
-                        <div class="stat-icon bg-danger bg-opacity-10 text-danger">
-                            <i class="bi bi-person-badge-fill"></i>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-12 col-sm-6 col-xl-3">
-                <div class="card card-stat shadow-sm border-start border-warning border-4 p-3 bg-white">
-                    <div class="d-flex align-items-center justify-content-between">
-                        <div>
-                            <span class="text-muted text-uppercase fw-semibold small">Ingresos Reservas</span>
-                            <h2 class="fw-bold my-1 text-dark">S/ #{reservaBean.ingresosTotales}</h2>
-                            <small class="text-muted">Facturación acumulada activa</small>
-                        </div>
-                        <div class="stat-icon bg-warning bg-opacity-10 text-warning">
-                            <i class="bi bi-cash-coin"></i>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Librerias de Apoyo Java Incorporadas -->
-        <h4 class="fw-bold mb-3 text-dark">
-            <i class="bi bi-boxes text-warning me-2"></i> Recursos Java y Arquitectura Integrada
-        </h4>
-        <div class="row g-4">
-            <div class="col-md-3">
-                <div class="card h-100 shadow-sm border-0">
-                    <div class="card-body">
-                        <span class="badge bg-primary mb-2">3.1. Google Guava</span>
-                        <h6 class="card-title fw-bold">Preconditions, Cache &amp; Immutable</h6>
-                        <p class="card-text text-muted small mb-0">
-                            Validaciones defensivas (<code>Preconditions</code>), caché en memoria para catálogo (<code>CacheBuilder</code>) y colecciones inmutables (<code>ImmutableList</code>).
+                        <h2 class="fw-bold">Sistema de Gestión Hotelera — Control Operativo (70%)</h2>
+                        <p class="col-md-10 fs-6 text-light-emphasis mb-3">
+                            Plataforma empresarial para el Hotel Wyndham Costa del Sol Chiclayo. Integra gestión de inventario, cotizador dinámico de reservas, operaciones de recepción (Check-in/Check-out), exportación Excel con Apache POI y auditoría de seguridad RBAC.
                         </p>
+                        <div class="d-flex flex-wrap gap-2">
+                            <h:link outcome="reservas.xhtml" styleClass="btn btn-warning fw-semibold px-4">
+                                <i class="bi bi-calendar2-check me-2"></i> Padrón de Reservas y Cotizador
+                            </h:link>
+                            <h:link outcome="recepcion.xhtml" styleClass="btn btn-light fw-semibold px-4">
+                                <i class="bi bi-key-fill me-2"></i> Recepción (Check-in / Check-out)
+                            </h:link>
+                            <h:link outcome="habitaciones.xhtml" styleClass="btn btn-outline-light px-4">
+                                <i class="bi bi-door-open me-2"></i> #{loginBean.esAdmin ? 'Gestión de Habitaciones' : 'Inventario de Habitaciones'}
+                            </h:link>
+                        </div>
                     </div>
                 </div>
-            </div>
 
-            <div class="col-md-3">
-                <div class="card h-100 shadow-sm border-0">
-                    <div class="card-body">
-                        <span class="badge bg-success mb-2">3.2. Apache POI</span>
-                        <h6 class="card-title fw-bold">Reportes Excel (.xlsx)</h6>
-                        <p class="card-text text-muted small mb-0">
-                            Generación dinámica de hojas de cálculo corporativas con <code>XSSFWorkbook</code> para exportar inventarios de habitaciones y reportes de reservas.
-                        </p>
+                <!-- KPIs de Inventario y Reservas -->
+                <h3 class="fw-bold mb-3 text-dark">
+                    <i class="bi bi-speedometer2 text-primary me-2"></i> Indicadores Operativos en Tiempo Real
+                </h3>
+                <div class="row g-3 mb-4">
+                    <div class="col-12 col-sm-6 col-xl-3">
+                        <div class="card card-stat shadow-sm border-start border-primary border-4 p-3 bg-white">
+                            <div class="d-flex align-items-center justify-content-between">
+                                <div>
+                                    <span class="text-muted text-uppercase fw-semibold small">Total Habitaciones</span>
+                                    <h2 class="fw-bold my-1 text-primary">#{habitacionBean.totalHabitaciones}</h2>
+                                    <small class="text-success fw-medium">#{habitacionBean.disponibles} disponibles ahora</small>
+                                </div>
+                                <div class="stat-icon bg-primary bg-opacity-10 text-primary">
+                                    <i class="bi bi-door-open-fill"></i>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                </div>
-            </div>
 
-            <div class="col-md-3">
-                <div class="card h-100 shadow-sm border-0">
-                    <div class="card-body">
-                        <span class="badge bg-warning text-dark mb-2">3.3. Apache Commons</span>
-                        <h6 class="card-title fw-bold">Lang3 &amp; Collections4</h6>
-                        <p class="card-text text-muted small mb-0">
-                            Saneamiento de cadenas con <code>StringUtils</code>, generación de códigos únicos <code>WYN-2026-XXXXXX</code> con <code>RandomStringUtils</code> y <code>CollectionUtils</code>.
-                        </p>
+                    <div class="col-12 col-sm-6 col-xl-3">
+                        <div class="card card-stat shadow-sm border-start border-success border-4 p-3 bg-white">
+                            <div class="d-flex align-items-center justify-content-between">
+                                <div>
+                                    <span class="text-muted text-uppercase fw-semibold small">Reservas Registradas</span>
+                                    <h2 class="fw-bold my-1 text-success">#{reservaBean.totalReservas}</h2>
+                                    <small class="text-muted">#{reservaBean.confirmadas} confirmadas / #{reservaBean.pendientes} pendientes</small>
+                                </div>
+                                <div class="stat-icon bg-success bg-opacity-10 text-success">
+                                    <i class="bi bi-calendar-check-fill"></i>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                </div>
-            </div>
 
-            <div class="col-md-3">
-                <div class="card h-100 shadow-sm border-0">
-                    <div class="card-body">
-                        <span class="badge bg-dark mb-2">3.4. Logback + TDD</span>
-                        <h6 class="card-title fw-bold">SLF4J, SOLID y JUnit 5</h6>
-                        <p class="card-text text-muted small mb-0">
-                            Auditoría estructurada en consola y archivo rotativo con <code>Logback</code>, principios SOLID con interfaces DAO y pruebas unitarias con <code>JUnit 5 + Mockito</code>.
-                        </p>
+                    <div class="col-12 col-sm-6 col-xl-3">
+                        <div class="card card-stat shadow-sm border-start border-danger border-4 p-3 bg-white">
+                            <div class="d-flex align-items-center justify-content-between">
+                                <div>
+                                    <span class="text-muted text-uppercase fw-semibold small">Estancias en Curso</span>
+                                    <h2 class="fw-bold my-1 text-danger">#{reservaBean.enCheckin}</h2>
+                                    <small class="text-danger fw-medium">Huéspedes con Check-in activo</small>
+                                </div>
+                                <div class="stat-icon bg-danger bg-opacity-10 text-danger">
+                                    <i class="bi bi-person-badge-fill"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-12 col-sm-6 col-xl-3">
+                        <div class="card card-stat shadow-sm border-start border-warning border-4 p-3 bg-white">
+                            <div class="d-flex align-items-center justify-content-between">
+                                <div>
+                                    <span class="text-muted text-uppercase fw-semibold small">Ingresos Reservas</span>
+                                    <h2 class="fw-bold my-1 text-dark">S/ #{reservaBean.ingresosTotales}</h2>
+                                    <small class="text-muted">Facturación acumulada activa</small>
+                                </div>
+                                <div class="stat-icon bg-warning bg-opacity-10 text-warning">
+                                    <i class="bi bi-cash-coin"></i>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
+
+                <!-- Librerías de Apoyo Java Incorporadas -->
+                <h4 class="fw-bold mb-3 text-dark">
+                    <i class="bi bi-boxes text-warning me-2"></i> Recursos Java y Arquitectura Integrada
+                </h4>
+                <div class="row g-4 mb-2">
+                    <div class="col-md-3">
+                        <div class="card h-100 shadow-sm border-0">
+                            <div class="card-body">
+                                <span class="badge bg-primary mb-2">3.1. Google Guava</span>
+                                <h6 class="card-title fw-bold">Preconditions, Cache &amp; Immutable</h6>
+                                <p class="card-text text-muted small mb-0">
+                                    Validaciones defensivas (<code>Preconditions</code>), caché en memoria para catálogo (<code>CacheBuilder</code>) y colecciones inmutables (<code>ImmutableList</code>).
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="card h-100 shadow-sm border-0">
+                            <div class="card-body">
+                                <span class="badge bg-success mb-2">3.2. Apache POI</span>
+                                <h6 class="card-title fw-bold">Reportes Excel (.xlsx)</h6>
+                                <p class="card-text text-muted small mb-0">
+                                    Generación dinámica de hojas de cálculo corporativas con <code>XSSFWorkbook</code> para exportar inventarios de habitaciones y reportes de reservas.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="card h-100 shadow-sm border-0">
+                            <div class="card-body">
+                                <span class="badge bg-warning text-dark mb-2">3.3. Apache Commons</span>
+                                <h6 class="card-title fw-bold">Lang3 &amp; Collections4</h6>
+                                <p class="card-text text-muted small mb-0">
+                                    Saneamiento de cadenas con <code>StringUtils</code>, generación de códigos únicos <code>WYN-2026-XXXXXX</code> con <code>RandomStringUtils</code> y <code>CollectionUtils</code>.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="card h-100 shadow-sm border-0">
+                            <div class="card-body">
+                                <span class="badge bg-dark mb-2">3.4. Logback + TDD</span>
+                                <h6 class="card-title fw-bold">SLF4J, SOLID y JUnit 5</h6>
+                                <p class="card-text text-muted small mb-0">
+                                    Auditoría estructurada en consola y archivo rotativo con <code>Logback</code>, principios SOLID con interfaces DAO y pruebas unitarias con <code>JUnit 5 + Mockito</code>.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <hr class="my-4"/>
             </div>
-        </div>
+        </h:panelGroup>
+
+        <!-- ===== CONTENIDO PRINCIPAL COMERCIAL DEL HOTEL (Estilos de inicio.css) ===== -->
+        <main id="contenido-principal">
+            <!-- Sección: Habitaciones y Servicios Destacados -->
+            <section class="seccion-servicios">
+                <h2>Habitaciones &amp; Servicios Destacados</h2>
+                <div class="cards-grid">
+                    <ui:repeat value="#{habitacionBean.listaTipos}" var="tipo">
+                        <div class="card">
+                            <img src="#{request.contextPath}/image/#{not empty tipo.imagenUrl ? tipo.imagenUrl : 'habitaciondeluxe.jpg'}"
+                                 alt="#{tipo.nombre}"/>
+                            <div class="card-body">
+                                <h3>#{tipo.nombre}</h3>
+                                <p class="precio">Desde S/. #{tipo.precioBaseNoche}</p>
+                                <p>#{tipo.descripcion}</p>
+                                <p style="font-size:0.85rem; color:var(--gold,#c7a44b); margin-top:0.4rem;">
+                                    Capacidad: hasta #{tipo.capacidadMaxima} huésped(es)
+                                </p>
+                            </div>
+                        </div>
+                    </ui:repeat>
+
+                    <!-- Amenidades Destacadas del Hotel -->
+                    <div class="card">
+                        <img src="#{request.contextPath}/image/restaurant.png" alt="Restaurante Gourmet"/>
+                        <div class="card-body">
+                            <h3>Restaurante Gourmet</h3>
+                            <p class="precio">Desde S/. 32.00</p>
+                            <p>Buffet internacional y platos típicos del norte preparados por chefs galardonados.</p>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <img src="#{request.contextPath}/image/spa.png" alt="Spa y Bienestar"/>
+                        <div class="card-body">
+                            <h3>Spa &amp; Bienestar</h3>
+                            <p class="precio">Desde S/. 110.00</p>
+                            <p>Masajes relajantes, sauna seco y de vapor para renovar sus energías.</p>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <img src="#{request.contextPath}/image/piscina.jpg" alt="Piscina Temperada"/>
+                        <div class="card-body">
+                            <h3>Piscina Climatizada</h3>
+                            <p class="precio">Incluido en hospedaje</p>
+                            <p>Relájese en nuestra piscina al aire libre disponible durante toda su estancia.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Sección: Horarios de Atención -->
+            <section class="seccion-horarios">
+                <h2>Horarios de Atención</h2>
+                <div class="tabla-wrapper">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Servicio</th>
+                                <th>Lunes - Viernes</th>
+                                <th>Sábado</th>
+                                <th>Domingo</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Recepción y Concierge</td>
+                                <td>24 horas</td>
+                                <td>24 horas</td>
+                                <td>24 horas</td>
+                            </tr>
+                            <tr>
+                                <td>Restaurante Paprika</td>
+                                <td>6:30 am – 10:30 pm</td>
+                                <td>7:00 am – 11:00 pm</td>
+                                <td>7:00 am – 10:00 pm</td>
+                            </tr>
+                            <tr>
+                                <td>Spa &amp; Gimnasio</td>
+                                <td>8:00 am – 9:00 pm</td>
+                                <td>9:00 am – 8:00 pm</td>
+                                <td>9:00 am – 6:00 pm</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- Sección: Conócenos -->
+            <section class="seccion-conocenos">
+                <h2>Conócenos</h2>
+                <p>Somos un equipo apasionado por la hospitalidad peruana, comprometido en brindarle una estadía inolvidable con calidez y excelencia en el centro de Chiclayo.</p>
+                <h:link outcome="acerca.xhtml">Saber más</h:link>
+            </section>
+
+            <!-- Sección: Redes Sociales -->
+            <section class="seccion-redes">
+                <h2>Síguenos en Redes Sociales</h2>
+                <ul>
+                    <li><a href="https://www.facebook.com/HotelesCostadelSolPeru/" target="_blank" rel="noopener noreferrer">Facebook</a></li>
+                    <li><a href="https://www.instagram.com/costadelsolperu/" target="_blank" rel="noopener noreferrer">Instagram</a></li>
+                </ul>
+            </section>
+        </main>
+    </ui:define>
+
+    <ui:define name="extraScripts">
+        <script src="#{request.contextPath}/Scripts/inicio.js"></script>
     </ui:define>
 </ui:composition>

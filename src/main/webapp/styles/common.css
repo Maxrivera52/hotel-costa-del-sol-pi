@@ -1,0 +1,313 @@
+/* ==========================================================================
+   HOTEL WYNDHAM COSTA DEL SOL CHICLAYO — SHARED BASE & COMPONENT STYLESHEET
+   File: /styles/common.css
+   Includes: Global Design Tokens, Box Resets, Typography, Shared Navbar,
+             Mobile Responsive Drawer, Shared Footer & Standard Components
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   1. CORE DESIGN TOKENS
+   -------------------------------------------------------------------------- */
+:root {
+    --navy: #1e2a3a;
+    --navy-dark: #0f1923;
+    --navy-light: #243347;
+    --gold: #c7a44b;
+    --gold2: #d4b15c;
+    --gold-dark: #a8843c;
+    --cream: #f9e7c2;
+    --white: #ffffff;
+    --text-dark: #1e293b;
+    --text-muted: #64748b;
+    --bg-light: #f4f6f9;
+    --border-color: #e2e8f0;
+    --error: #e74c3c;
+    --ok: #27ae60;
+    --trans: all 0.3s ease;
+}
+
+/* --------------------------------------------------------------------------
+   2. BOX RESETS & TYPOGRAPHY
+   -------------------------------------------------------------------------- */
+*,
+*::before,
+*::after {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    font-size: 16px;
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: 'Montserrat', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: var(--text-dark);
+    line-height: 1.6;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* --------------------------------------------------------------------------
+   3. SHARED GLOBAL NAVBAR (#header-nav)
+   -------------------------------------------------------------------------- */
+#header-nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1000;
+    background-color: transparent;
+    transition: background-color 0.35s ease, box-shadow 0.35s ease;
+    padding: 0.8rem 1.5rem;
+}
+
+/* Sticky / Solid variant for subpages and on scroll */
+#header-nav.scrolled,
+#header-nav.nav-solid {
+    background-color: var(--navy);
+    box-shadow: 0 2px 14px rgba(0, 0, 0, 0.28);
+}
+
+#header-nav.nav-solid {
+    position: sticky;
+    top: 0;
+}
+
+.header-inner {
+    max-width: 1280px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+}
+
+.logo-nav {
+    color: var(--cream);
+    font-size: 1.05rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    flex-shrink: 0;
+    text-decoration: none;
+    transition: var(--trans);
+}
+
+.logo-nav:hover {
+    color: var(--gold);
+}
+
+/* Hamburger toggle for mobile */
+#btn-menu {
+    display: none;
+    flex-direction: column;
+    gap: 5px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 4px;
+    z-index: 1100;
+}
+
+#btn-menu span {
+    display: block;
+    width: 26px;
+    height: 3px;
+    background-color: var(--cream);
+    border-radius: 4px;
+    transition: var(--trans);
+}
+
+#btn-menu.abierto span:nth-child(1) {
+    transform: translateY(8px) rotate(45deg);
+}
+
+#btn-menu.abierto span:nth-child(2) {
+    opacity: 0;
+}
+
+#btn-menu.abierto span:nth-child(3) {
+    transform: translateY(-8px) rotate(-45deg);
+}
+
+/* Principal Nav Elements */
+#nav-principal {
+    display: flex;
+    align-items: center;
+}
+
+#nav-principal ul {
+    list-style: none;
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+    flex-wrap: wrap;
+    margin: 0;
+    padding: 0;
+}
+
+#nav-principal ul li {
+    list-style: none;
+}
+
+#nav-principal ul li a {
+    color: var(--cream);
+    text-decoration: none;
+    padding: 0.45rem 0.8rem;
+    border-radius: 8px;
+    font-size: 0.92rem;
+    font-weight: 500;
+    transition: var(--trans);
+    display: inline-block;
+}
+
+#nav-principal ul li a:hover,
+#nav-principal ul li a.activo {
+    color: var(--gold);
+    background: rgba(199, 164, 75, 0.08);
+}
+
+/* Special Auth Buttons */
+#nav-principal ul li a.btn-login {
+    background-color: var(--gold);
+    color: var(--navy);
+    font-weight: 700;
+    padding: 0.45rem 1.15rem;
+    border-radius: 20px;
+    text-decoration: none;
+    box-shadow: 0 2px 8px rgba(199, 164, 75, 0.3);
+}
+
+#nav-principal ul li a.btn-login:hover {
+    background-color: var(--gold2);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(199, 164, 75, 0.45);
+    color: var(--navy);
+}
+
+#nav-principal ul li a.btn-logout,
+#nav-principal ul li button.btn-logout {
+    background-color: var(--gold);
+    color: var(--navy);
+    font-weight: 700;
+    padding: 0.45rem 1.15rem;
+    border-radius: 20px;
+    border: none;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-block;
+    transition: transform 0.18s ease, background-color 0.18s ease, box-shadow 0.18s ease;
+    box-shadow: 0 2px 8px rgba(199, 164, 75, 0.3);
+}
+
+#nav-principal ul li a.btn-logout:hover,
+#nav-principal ul li button.btn-logout:hover {
+    background-color: var(--gold2);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(199, 164, 75, 0.45);
+    color: var(--navy);
+}
+
+.nav-user-greeting {
+    display: inline-flex;
+    align-items: center;
+    color: var(--cream);
+    font-size: 0.88rem;
+    padding: 0.45rem 0.6rem;
+    white-space: nowrap;
+}
+
+.nav-user-greeting .user-name {
+    color: var(--gold);
+    font-weight: 600;
+}
+
+/* --------------------------------------------------------------------------
+   4. SHARED GLOBAL FOOTER
+   -------------------------------------------------------------------------- */
+footer {
+    background-color: var(--navy);
+    color: #b8a97c;
+    text-align: center;
+    padding: 2rem 1.25rem;
+    margin-top: auto;
+    border-top: 1px solid rgba(199, 164, 75, 0.15);
+}
+
+footer p {
+    margin: 0.35rem 0;
+    font-size: 0.9rem;
+}
+
+footer a {
+    color: inherit;
+    text-decoration: none;
+    transition: var(--trans);
+}
+
+footer a:hover {
+    color: var(--cream);
+    text-decoration: underline;
+}
+
+/* --------------------------------------------------------------------------
+   5. RESPONSIVE NAVIGATION DRAWER
+   -------------------------------------------------------------------------- */
+@media (max-width: 860px) {
+    #btn-menu {
+        display: flex;
+    }
+
+    #nav-principal {
+        display: none;
+        width: 100%;
+        order: 3;
+        background: var(--navy);
+        border-top: 1px solid rgba(199, 164, 75, 0.2);
+        margin-top: 0.5rem;
+        padding: 0.75rem 0;
+        border-radius: 0 0 10px 10px;
+    }
+
+    #nav-principal.nav-abierto {
+        display: block;
+    }
+
+    #nav-principal ul {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 0.25rem;
+        width: 100%;
+    }
+
+    #nav-principal ul li {
+        width: 100%;
+    }
+
+    #nav-principal ul li a {
+        display: block;
+        padding: 0.75rem 1rem;
+        border-bottom: 1px solid rgba(249, 231, 194, 0.1);
+        width: 100%;
+        font-size: 0.95rem;
+    }
+
+    #nav-principal ul li a.btn-login,
+    #nav-principal ul li a.btn-logout {
+        border-radius: 6px;
+        text-align: center;
+        margin: 0.5rem 1rem;
+        width: calc(100% - 2rem);
+    }
+
+    .nav-user-greeting {
+        padding: 0.75rem 1rem;
+        border-bottom: 1px solid rgba(249, 231, 194, 0.1);
+        width: 100%;
+        display: block;
+    }
+}

@@ -4,6 +4,8 @@ import com.utp.hotelcostadelsol.model.dto.CotizacionDTO;
 import com.utp.hotelcostadelsol.model.dto.HabitacionDTO;
 import com.utp.hotelcostadelsol.model.dto.ReservaDTO;
 import com.utp.hotelcostadelsol.model.dto.TipoHabitacionDTO;
+import com.utp.hotelcostadelsol.model.dto.UsuarioDTO;
+import com.utp.hotelcostadelsol.security.Rol;
 import com.utp.hotelcostadelsol.service.ExcelExportService;
 import com.utp.hotelcostadelsol.service.HabitacionService;
 import com.utp.hotelcostadelsol.service.IReporteExportService;
@@ -24,10 +26,12 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * Managed Bean (@ViewScoped) para el modulo de Reservas, Cotizacion Dinamica
- * y Exportacion de Reportes Excel con Apache POI (Proyecto Integrador).
+ * y Exportacion de Reportes Excel con Apache POI (Proyecto Integrador),
+ * diferenciando entre la vista personal del Cliente (ROLE_CLIENTE) y el Padron General (Admin/Recepcion).
  */
 @Named("reservaBean")
 @ViewScoped
@@ -63,8 +67,16 @@ public class ReservaBean implements Serializable {
 
     private void reiniciarFormulario() {
         this.nuevaReserva = new ReservaDTO();
-        this.nuevaReserva.setIdCliente(3);
-        this.nuevaReserva.setNombreCliente("Joel Cori Alarcón");
+        UsuarioDTO sesion = obtenerUsuarioSesion();
+        if (sesion != null && esRolCliente(sesion)) {
+            this.nuevaReserva.setIdCliente(sesion.getIdUsuario());
+            this.nuevaReserva.setNombreCliente(sesion.getNombreCompleto());
+            this.nuevaReserva.setOrigen("WEB");
+        } else {
+            this.nuevaReserva.setIdCliente(3);
+            this.nuevaReserva.setNombreCliente("Joel Cori Alarcón");
+            this.nuevaReserva.setOrigen("RECEPCION");
+        }
         this.nuevaReserva.setIdTipoHabitacion(2);
         this.nuevaReserva.setNumeroHuespedes(2);
         this.nuevaReserva.setPrecioServiciosExtra(BigDecimal.ZERO);
@@ -74,7 +86,19 @@ public class ReservaBean implements Serializable {
     }
 
     public void cargarDatos() {
-        this.listaReservas = reservaService.listarPorEstado(filtroEstado);
+        List<ReservaDTO> base = reservaService.listarPorEstado(filtroEstado);
+        UsuarioDTO sesion = obtenerUsuarioSesion();
+        if (sesion != null && esRolCliente(sesion)) {
+            int idCliente = sesion.getIdUsuario();
+            String nombre = sesion.getNombreCompleto();
+            this.listaReservas = base.stream()
+                    .filter(r -> r.getIdCliente() == idCliente
+                            || (nombre != null && StringUtils.equalsIgnoreCase(nombre, r.getNombreCliente())))
+                    .collect(Collectors.toList());
+        } else {
+            this.listaReservas = base;
+        }
+
         this.listaTipos = habitacionService.listarTipos();
         this.habitacionesDisponibles = habitacionService.listarDisponibles();
 
@@ -93,12 +117,19 @@ public class ReservaBean implements Serializable {
             this.cotizacionActual = reservaService.calcularCotizacion(
                     nuevaReserva.getIdTipoHabitacion(), ci, co, nuevaReserva.getPrecioServiciosExtra()
             );
-            FacesContext.getCurrentInstance().addMessage(null,
-                new FacesMessage(FacesMessage.SEVERITY_INFO, "Cotización Calculada",
-                    "Estancia de " + cotizacionActual.getNoches() + " noche(s) - Total estimado: S/ " + cotizacionActual.getMontoTotal()));
+            FacesContext fc = FacesContext.getCurrentInstance();
+            if (fc != null) {
+                fc.addMessage(null, new FacesMessage(
+                        FacesMessage.SEVERITY_INFO,
+                        "Cotización Calculada",
+                        "Estancia de " + cotizacionActual.getNoches() + " noche(s) - Total estimado: S/ " + cotizacionActual.getMontoTotal()
+                ));
+            }
         } catch (Exception e) {
-            FacesContext.getCurrentInstance().addMessage(null,
-                new FacesMessage(FacesMessage.SEVERITY_ERROR, "Validación Guava", e.getMessage()));
+            FacesContext fc = FacesContext.getCurrentInstance();
+            if (fc != null) {
+                fc.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Validación Guava", e.getMessage()));
+            }
         }
     }
 
@@ -109,32 +140,65 @@ public class ReservaBean implements Serializable {
             nuevaReserva.setFechaCheckin(ci);
             nuevaReserva.setFechaCheckout(co);
 
+            UsuarioDTO sesion = obtenerUsuarioSesion();
+            if (sesion != null && esRolCliente(sesion)) {
+                nuevaReserva.setIdCliente(sesion.getIdUsuario());
+                nuevaReserva.setNombreCliente(sesion.getNombreCompleto());
+                nuevaReserva.setOrigen("WEB");
+                nuevaReserva.setIdHabitacion(null);
+            }
+
             ReservaDTO creada = reservaService.crearReserva(nuevaReserva);
-            FacesContext.getCurrentInstance().addMessage(null,
-                new FacesMessage(FacesMessage.SEVERITY_INFO, "Reserva Registrada",
-                    "Código generado (Apache Commons): " + creada.getCodigoReserva() + " por S/ " + creada.getMontoTotal()));
+            FacesContext fc = FacesContext.getCurrentInstance();
+            if (fc != null) {
+                fc.addMessage(null, new FacesMessage(
+                        FacesMessage.SEVERITY_INFO,
+                        "Reserva Registrada",
+                        "Código generado (Apache Commons): " + creada.getCodigoReserva() + " por S/ " + creada.getMontoTotal()
+                ));
+            }
 
             reiniciarFormulario();
             cargarDatos();
         } catch (Exception e) {
             LOGGER.warn("Error de validacion al crear reserva: {}", e.getMessage());
-            FacesContext.getCurrentInstance().addMessage(null,
-                new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error de Validación", e.getMessage()));
+            FacesContext fc = FacesContext.getCurrentInstance();
+            if (fc != null) {
+                fc.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error de Validación", e.getMessage()));
+            }
         }
     }
 
     public void cancelar(ReservaDTO reserva) {
-        boolean ok = reservaService.cancelarReserva(reserva.getIdReserva(), 1);
+        UsuarioDTO sesion = obtenerUsuarioSesion();
+        int idActor = sesion != null ? sesion.getIdUsuario() : 1;
+        if (sesion != null && esRolCliente(sesion) && reserva.getIdCliente() != sesion.getIdUsuario()) {
+            FacesContext fc = FacesContext.getCurrentInstance();
+            if (fc != null) {
+                fc.addMessage(null, new FacesMessage(
+                        FacesMessage.SEVERITY_ERROR,
+                        "Acceso Denegado (RBAC)",
+                        "Solo puede cancelar sus propias reservas."
+                ));
+            }
+            return;
+        }
+        boolean ok = reservaService.cancelarReserva(reserva.getIdReserva(), idActor);
         if (ok) {
             cargarDatos();
-            FacesContext.getCurrentInstance().addMessage(null,
-                new FacesMessage(FacesMessage.SEVERITY_WARN, "Reserva Cancelada",
-                    "La reserva " + reserva.getCodigoReserva() + " cambió a estado CANCELADA."));
+            FacesContext fc = FacesContext.getCurrentInstance();
+            if (fc != null) {
+                fc.addMessage(null, new FacesMessage(
+                        FacesMessage.SEVERITY_WARN,
+                        "Reserva Cancelada",
+                        "La reserva " + reserva.getCodigoReserva() + " cambió a estado CANCELADA."
+                ));
+            }
         }
     }
 
     public void filtrar() {
-        this.listaReservas = reservaService.listarPorEstado(filtroEstado);
+        cargarDatos();
     }
 
     public void limpiarFiltros() {
@@ -146,6 +210,18 @@ public class ReservaBean implements Serializable {
      * Exporta el reporte consolidado de reservas a un archivo Excel (.xlsx) con Apache POI.
      */
     public void exportarExcel() {
+        UsuarioDTO sesion = obtenerUsuarioSesion();
+        if (sesion != null && esRolCliente(sesion)) {
+            FacesContext fc = FacesContext.getCurrentInstance();
+            if (fc != null) {
+                fc.addMessage(null, new FacesMessage(
+                        FacesMessage.SEVERITY_ERROR,
+                        "Acceso Denegado (RBAC)",
+                        "La exportación ejecutiva de reservas está reservada para Administración y Recepción."
+                ));
+            }
+            return;
+        }
         try {
             byte[] excelBytes = exportService.exportarReporteReservasExcel(listaReservas);
             FacesContext fc = FacesContext.getCurrentInstance();
@@ -162,9 +238,32 @@ public class ReservaBean implements Serializable {
             fc.responseComplete();
         } catch (Exception e) {
             LOGGER.error("Error al exportar Excel de reservas: {}", e.getMessage());
-            FacesContext.getCurrentInstance().addMessage(null,
-                new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error Apache POI", "No se pudo exportar el reporte Excel."));
+            FacesContext fc = FacesContext.getCurrentInstance();
+            if (fc != null) {
+                fc.addMessage(null, new FacesMessage(
+                        FacesMessage.SEVERITY_ERROR,
+                        "Error Apache POI",
+                        "No se pudo exportar el reporte Excel."
+                ));
+            }
         }
+    }
+
+    private UsuarioDTO obtenerUsuarioSesion() {
+        FacesContext fc = FacesContext.getCurrentInstance();
+        if (fc == null || fc.getExternalContext() == null) {
+            return null;
+        }
+        Object user = fc.getExternalContext().getSessionMap().get(LoginBean.SESSION_USER_KEY);
+        return (user instanceof UsuarioDTO u) ? u : null;
+    }
+
+    private boolean esRolCliente(UsuarioDTO u) {
+        if (u == null) {
+            return false;
+        }
+        return Rol.ROLE_CLIENTE == Rol.fromCodigo(u.getRolCodigo())
+                || u.getIdRol() == Rol.ROLE_CLIENTE.getIdRol();
     }
 
     public List<ReservaDTO> getListaReservas() { return listaReservas; }

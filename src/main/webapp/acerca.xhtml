@@ -1,0 +1,118 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="jakarta.faces.html"
+                xmlns:f="jakarta.faces.core"
+                xmlns:ui="jakarta.faces.facelets"
+                template="/WEB-INF/templates/layout.xhtml">
+
+    <ui:define name="title">Hotel Wyndham Costa del Sol Chiclayo - Acerca de</ui:define>
+
+    <ui:define name="extraHead">
+        <link rel="stylesheet" href="#{request.contextPath}/styles/acerca.css"/>
+    </ui:define>
+
+    <ui:define name="fullWidthContent">
+        <audio id="audioAcerca" src="#{request.contextPath}/audio/musicadeinicio.mp3" loop="loop"></audio>
+
+        <main>
+            <!-- Hero Acerca de -->
+            <section class="hero-acerca">
+                <h2>Elegancia, confort y hospitalidad que transforman tu viaje</h2>
+                <img src="#{request.contextPath}/image/Acerca.png" alt="Acerca de nuestro hotel"/>
+                <p>Creemos que viajar debe sentirse como estar en casa, pero con el lujo y la comodidad que mereces. Por eso diseñamos experiencias hoteleras que facilitan tu estancia y elevan cada momento, sin complicaciones ni preocupaciones.</p>
+                <p>Somos un equipo apasionado que escucha, atiende y construye recuerdos a tu lado. Con calidez norteña y estándares internacionales de la prestigiosa cadena Wyndham, superamos las expectativas de cada huésped.</p>
+            </section>
+
+            <!-- Historia -->
+            <section class="historia">
+                <h2>Nuestra Historia</h2>
+                <p>El Hotel Wyndham Costa del Sol Chiclayo abrió sus puertas en 1995 con la misión de ofrecer alojamiento de primera categoría, combinando la tradicional calidez y gastronomía del norte peruano con los rigurosos estándares globales de hospitalidad.</p>
+                <p>A lo largo de más de 30 años hemos crecido junto a nuestros huéspedes, incorporando modernas suites, salones de conferencias, spa de primer nivel y soluciones tecnológicas para atender tanto a viajeros de negocios como de placer.</p>
+                <p>Ubicados estratégicamente en el centro histórico y comercial de Chiclayo, somos el punto de partida privilegiado para descubrir las maravillas de la cultura Mochica y Lambayeque, el Señor de Sipán y las playas norteñas.</p>
+            </section>
+
+            <!-- Misión, Visión y Valores -->
+            <section class="historia" style="background: rgba(255, 255, 255, 0.02); border-radius: 12px; padding: 2rem;">
+                <h2>Misión, Visión y Valores</h2>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 2rem; margin-top: 1.5rem;">
+                    <div style="background: rgba(255, 255, 255, 0.04); padding: 1.5rem; border-radius: 10px; border-left: 4px solid var(--gold, #c7a44b);">
+                        <img src="#{request.contextPath}/image/Mision.png" alt="Misión" style="width: 50px; height: 50px; margin-bottom: 0.75rem; object-fit: contain;"/>
+                        <h3 style="color: var(--gold, #c7a44b); margin-bottom: 0.5rem;">Nuestra Misión</h3>
+                        <p style="font-size: 0.95rem; line-height: 1.6;">Brindar experiencias memorables de hospitalidad y descanso superior en Chiclayo, superando continuamente las expectativas de confort, seguridad y bienestar de nuestros huéspedes.</p>
+                    </div>
+                    <div style="background: rgba(255, 255, 255, 0.04); padding: 1.5rem; border-radius: 10px; border-left: 4px solid var(--gold, #c7a44b);">
+                        <img src="#{request.contextPath}/image/Vision.png" alt="Visión" style="width: 50px; height: 50px; margin-bottom: 0.75rem; object-fit: contain;"/>
+                        <h3 style="color: var(--gold, #c7a44b); margin-bottom: 0.5rem;">Nuestra Visión</h3>
+                        <p style="font-size: 0.95rem; line-height: 1.6;">Ser reconocidos como el hotel líder y de mayor preferencia en el norte del Perú, distinguidos por la excelencia en el servicio humano y la innovación hotelera sostenible.</p>
+                    </div>
+                    <div style="background: rgba(255, 255, 255, 0.04); padding: 1.5rem; border-radius: 10px; border-left: 4px solid var(--gold, #c7a44b);">
+                        <h3 style="color: var(--gold, #c7a44b); margin-bottom: 0.5rem;">Nuestros Valores</h3>
+                        <ul style="list-style-position: inside; font-size: 0.95rem; line-height: 1.8; color: inherit;">
+                            <li><strong>Excelencia:</strong> Cuidado riguroso de cada detalle.</li>
+                            <li><strong>Hospitalidad:</strong> Calidez humana auténtica.</li>
+                            <li><strong>Integridad:</strong> Transparencia, ética y confianza.</li>
+                            <li><strong>Sostenibilidad:</strong> Compromiso social y ambiental.</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Nuestro Equipo -->
+            <section class="equipo">
+                <h2>Nuestro Equipo de Profesionales</h2>
+                <img src="#{request.contextPath}/image/Personal.png" alt="Equipo del Hotel Wyndham"/>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Nombre</th>
+                            <th>Departamento</th>
+                            <th>Años de Experiencia</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Javier Morales</td>
+                            <td>Gerencia General</td>
+                            <td>18 años</td>
+                        </tr>
+                        <tr>
+                            <td>Claudia Ríos</td>
+                            <td>Recepción y Guest Services</td>
+                            <td>12 años</td>
+                        </tr>
+                        <tr>
+                            <td>Fernando Quiroz</td>
+                            <td>Chef Ejecutivo / Restaurante</td>
+                            <td>15 años</td>
+                        </tr>
+                        <tr>
+                            <td>Mariana Paredes</td>
+                            <td>Gobernanta / Housekeeping</td>
+                            <td>20 años</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </section>
+
+            <!-- Ubicación e Instalaciones -->
+            <section class="ubicacion">
+                <h2>Nuestras Instalaciones y Ubicación</h2>
+                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3331.601683307082!2d-79.83885760205305!3d-6.774184403253499!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x904ce93388987135%3A0x864c53b9ff79a625!2sWyndham%20Costa%20del%20Sol%20Chiclayo!5e0!3m2!1ses!2spe!4v1776908829883!5m2!1ses!2spe"
+                        allowfullscreen="allowfullscreen" loading="lazy" title="Ubicación Hotel Wyndham Costa del Sol Chiclayo"></iframe>
+            </section>
+
+            <!-- Frase y Galería -->
+            <section class="frase-galeria">
+                <h2>Más que un destino, somos una experiencia de confort y hospitalidad en el corazón de Chiclayo.</h2>
+                <div class="galeria">
+                    <img src="#{request.contextPath}/image/Inicio.jpg" alt="Hotel Fachada"/>
+                    <img src="#{request.contextPath}/image/habitacionstandar.png" alt="Habitaciones de lujo"/>
+                    <img src="#{request.contextPath}/image/restaurant.png" alt="Restaurante Paprika"/>
+                </div>
+            </section>
+        </main>
+    </ui:define>
+
+    <ui:define name="extraScripts">
+        <script src="#{request.contextPath}/Scripts/acerca.js"></script>
+    </ui:define>
+</ui:composition>

@@ -6,66 +6,121 @@
 <h:head>
     <meta charset="UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title><ui:insert name="title">Hotel Costa del Sol - Proyecto Integrador</ui:insert></title>
+    <title><ui:insert name="title">Hotel Wyndham Costa del Sol Chiclayo</ui:insert></title>
 
-    <!-- Bootstrap 5.3 CSS -->
+    <!-- Bootstrap 5.3 CSS & Icons -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"/>
-    <!-- Bootstrap Icons -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet"/>
-    <!-- Estilos Corporativos -->
+    <!-- Estilos Compartidos del Portal Principal -->
+    <link rel="stylesheet" href="#{request.contextPath}/styles/common.css"/>
+    <!-- Estilos Corporativos JSF -->
     <h:outputStylesheet name="css/style.css"/>
+    <ui:insert name="extraHead"/>
 </h:head>
 <h:body>
-    <!-- Navbar Institucional -->
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top shadow-sm" style="background-color: #0a2540 !important;">
+    <!-- Navbar Institucional Unificada con Control por Roles (RBAC) -->
+    <nav class="navbar navbar-expand-lg navbar-dark sticky-top shadow-sm" style="background-color: #1e2a3a !important; border-bottom: 1px solid rgba(199, 164, 75, 0.25);">
         <div class="container">
-            <h:link outcome="index.xhtml" styleClass="navbar-brand d-flex align-items-center gap-2">
-                <i class="bi bi-building fs-4 text-warning"></i>
-                <span>Costa del Sol <small class="text-warning fw-light fs-6">Chiclayo</small></span>
+            <h:link outcome="index.xhtml" styleClass="navbar-brand d-flex align-items-center gap-2 text-decoration-none">
+                <i class="bi bi-building fs-4" style="color: #c7a44b;"></i>
+                <span style="color: #f9e7c2; letter-spacing: 0.06em;">WYNDHAM COSTA DEL SOL <small class="fw-light fs-6" style="color: #c7a44b;">Chiclayo</small></span>
             </h:link>
-            
+
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navCosta">
                 <span class="navbar-toggler-icon"></span>
             </button>
-            
+
             <div class="collapse navbar-collapse" id="navCosta">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-3">
+                    <!-- Enlaces Públicos del Portal Hotelero -->
                     <li class="nav-item">
                         <h:link outcome="index.xhtml" styleClass="nav-link">
                             <i class="bi bi-house-door me-1"></i> Inicio
                         </h:link>
                     </li>
                     <li class="nav-item">
-                        <h:link outcome="habitaciones.xhtml" styleClass="nav-link">
-                            <i class="bi bi-door-open me-1"></i> Habitaciones
+                        <h:link outcome="servicios.xhtml" styleClass="nav-link">
+                            <i class="bi bi-stars me-1"></i> Servicios
                         </h:link>
                     </li>
                     <li class="nav-item">
-                        <h:link outcome="reservas.xhtml" styleClass="nav-link">
-                            <i class="bi bi-calendar2-check me-1"></i> Reservas y Cotizador
+                        <h:link outcome="acerca.xhtml" styleClass="nav-link">
+                            <i class="bi bi-info-circle me-1"></i> Acerca de
                         </h:link>
                     </li>
                     <li class="nav-item">
-                        <h:link outcome="recepcion.xhtml" styleClass="nav-link">
-                            <i class="bi bi-key me-1"></i> Recepción y Auditoría
+                        <h:link outcome="contacto.xhtml" styleClass="nav-link">
+                            <i class="bi bi-envelope me-1"></i> Contacto
                         </h:link>
                     </li>
+
+                    <!-- Enlaces para Cliente Autenticado (ROLE_CLIENTE) -->
+                    <h:panelGroup rendered="#{loginBean.esCliente}">
+                        <li class="nav-item">
+                            <h:link outcome="habitaciones.xhtml" styleClass="nav-link text-warning">
+                                <i class="bi bi-door-open me-1"></i> Catálogo Habitaciones
+                            </h:link>
+                        </li>
+                    </h:panelGroup>
+                    <h:panelGroup rendered="#{loginBean.esCliente}">
+                        <li class="nav-item">
+                            <h:link outcome="reservas.xhtml" styleClass="nav-link text-warning fw-semibold">
+                                <i class="bi bi-calendar2-check me-1"></i> Reservar / Mis Reservas
+                            </h:link>
+                        </li>
+                    </h:panelGroup>
+
+                    <!-- Enlaces para Personal Operativo: Recepcion (ROLE_RECEPCION) y Administrador (ROLE_ADMIN) -->
+                    <h:panelGroup rendered="#{loginBean.esPersonalOperativo}">
+                        <li class="nav-item">
+                            <h:link outcome="habitaciones.xhtml" styleClass="nav-link text-warning">
+                                <i class="bi bi-door-open me-1"></i> #{loginBean.esAdmin ? 'Gestión Habitaciones' : 'Inventario Habitaciones'}
+                            </h:link>
+                        </li>
+                    </h:panelGroup>
+                    <h:panelGroup rendered="#{loginBean.esPersonalOperativo}">
+                        <li class="nav-item">
+                            <h:link outcome="reservas.xhtml" styleClass="nav-link text-warning">
+                                <i class="bi bi-calendar2-check me-1"></i> Padrón Reservas
+                            </h:link>
+                        </li>
+                    </h:panelGroup>
+                    <h:panelGroup rendered="#{loginBean.esPersonalOperativo}">
+                        <li class="nav-item">
+                            <h:link outcome="recepcion.xhtml" styleClass="nav-link text-warning fw-semibold">
+                                <i class="bi bi-key me-1"></i> Recepción y Auditoría
+                            </h:link>
+                        </li>
+                    </h:panelGroup>
                 </ul>
 
+                <!-- Sección de Sesión de Usuario -->
                 <div class="d-flex align-items-center gap-3">
                     <h:panelGroup rendered="#{loginBean.autenticado}">
                         <div class="dropdown">
-                            <button class="btn btn-outline-light btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown">
-                                <i class="bi bi-person-circle me-1"></i> #{loginBean.usuarioLogueado.nombreCompleto}
+                            <button class="btn btn-outline-warning btn-sm dropdown-toggle d-flex align-items-center gap-1" type="button" data-bs-toggle="dropdown">
+                                <i class="bi bi-person-circle"></i>
+                                <span>#{loginBean.usuarioLogueado.nombreCompleto}</span>
+                                <span class="badge bg-warning text-dark ms-1">#{loginBean.esAdmin ? 'Admin' : (loginBean.esRecepcion ? 'Recepción' : 'Cliente')}</span>
                             </button>
                             <ul class="dropdown-menu dropdown-menu-end shadow">
-                                <li><h:link outcome="habitaciones.xhtml" styleClass="dropdown-item">Gestionar Habitaciones</h:link></li>
-                                <li><h:link outcome="reservas.xhtml" styleClass="dropdown-item">Módulo de Reservas</h:link></li>
-                                <li><h:link outcome="recepcion.xhtml" styleClass="dropdown-item">Check-in / Check-out</h:link></li>
+                                <!-- Opciones exclusivas según Rol -->
+                                <h:panelGroup rendered="#{loginBean.esCliente}">
+                                    <li><h:link outcome="habitaciones.xhtml" styleClass="dropdown-item"><i class="bi bi-door-open me-1"></i> Ver Catálogo de Habitaciones</h:link></li>
+                                    <li><h:link outcome="reservas.xhtml" styleClass="dropdown-item"><i class="bi bi-calendar2-heart me-1"></i> Cotizar y Mis Reservas</h:link></li>
+                                </h:panelGroup>
+
+                                <h:panelGroup rendered="#{loginBean.esPersonalOperativo}">
+                                    <li><h:link outcome="index.xhtml" styleClass="dropdown-item"><i class="bi bi-speedometer2 me-1"></i> Dashboard Operativo KPI</h:link></li>
+                                    <li><h:link outcome="habitaciones.xhtml" styleClass="dropdown-item"><i class="bi bi-building-gear me-1"></i> #{loginBean.esAdmin ? 'Gestionar Habitaciones' : 'Inventario de Habitaciones'}</h:link></li>
+                                    <li><h:link outcome="reservas.xhtml" styleClass="dropdown-item"><i class="bi bi-journal-bookmark me-1"></i> Padrón General de Reservas</h:link></li>
+                                    <li><h:link outcome="recepcion.xhtml" styleClass="dropdown-item"><i class="bi bi-key-fill me-1"></i> Check-in / Check-out y Pagos</h:link></li>
+                                </h:panelGroup>
+
                                 <li><hr class="dropdown-divider"/></li>
                                 <li>
-                                    <h:form>
-                                        <h:commandLink action="#{loginBean.cerrarSesion}" styleClass="dropdown-item text-danger">
+                                    <h:form styleClass="m-0">
+                                        <h:commandLink action="#{loginBean.cerrarSesion}" styleClass="dropdown-item text-danger fw-semibold">
                                             <i class="bi bi-box-arrow-right me-1"></i> Cerrar Sesión
                                         </h:commandLink>
                                     </h:form>
@@ -75,7 +130,7 @@
                     </h:panelGroup>
 
                     <h:panelGroup rendered="#{!loginBean.autenticado}">
-                        <h:link outcome="login.xhtml" styleClass="btn btn-outline-warning btn-sm px-3">
+                        <h:link outcome="login.xhtml" styleClass="btn btn-sm fw-bold px-3 rounded-pill" style="background-color: #c7a44b; color: #1e2a3a;">
                             <i class="bi bi-box-arrow-in-right me-1"></i> Iniciar Sesión
                         </h:link>
                     </h:panelGroup>
@@ -84,29 +139,29 @@
         </div>
     </nav>
 
-    <!-- Contenido Principal Dinamico -->
-    <main class="flex-grow-1 py-4">
-        <div class="container">
-            <ui:insert name="content">
-            </ui:insert>
-        </div>
-    </main>
+    <!-- Sección de Ancho Completo (Hero Video y Vistas Públicas del Hotel) -->
+    <ui:insert name="fullWidthContent"/>
 
-    <!-- Footer Academico UTP -->
-    <footer class="footer-utp py-4 mt-auto">
+    <!-- Contenido de Módulos Operativos en Contenedor -->
+    <div class="flex-grow-1">
+        <div class="container">
+            <ui:insert name="content"/>
+        </div>
+    </div>
+
+    <!-- Footer Institucional Unificado -->
+    <footer class="footer-utp py-4 mt-auto" style="background-color: #1e2a3a; border-top: 1px solid rgba(199, 164, 75, 0.2);">
         <div class="container text-center text-md-start">
             <div class="row align-items-center">
                 <div class="col-md-6 mb-3 mb-md-0">
-                    <h6 class="text-white mb-1">Universidad Tecnológica del Perú (UTP)</h6>
-                    <p class="mb-0 text-muted">Facultad de Ingeniería de Sistemas e Informática</p>
-                    <small class="text-secondary">Arquitectura MVC, TDD, DAO, SOLID | Guava, Apache POI, Apache Commons, Logback</small>
+                    <h6 class="text-white mb-1">Hotel Wyndham Costa del Sol Chiclayo — UTP</h6>
+                    <p class="mb-0" style="color: #f9e7c2; font-size: 0.85rem;">Av. José Balta 399, Chiclayo – Lambayeque, Perú | Tel: +51 (74) 227272</p>
+                    <small class="text-secondary">Avance de Proyecto Final (70%) — Arquitectura MVC, TDD, DAO, SOLID | Guava, Apache POI, Commons, Logback</small>
                 </div>
                 <div class="col-md-6 text-md-end">
                     <span class="d-block text-white fw-semibold mb-1">Equipo de Desarrollo:</span>
-                    <small class="d-block text-muted">Max Rivera Morán (U22242437)</small>
-                    <small class="d-block text-muted">Miguel Suárez Perdomo (U23246385)</small>
-                    <small class="d-block text-muted">Joel Cori Alarcón (U23303991)</small>
-                    <small class="d-block text-muted">Piero (piero_123aqp@hotmail.com)</small>
+                    <small class="d-block" style="color: #b8a97c;">Max Rivera Morán (U22242437) • Miguel Suárez Perdomo (U23246385)</small>
+                    <small class="d-block" style="color: #b8a97c;">Joel Cori Alarcón (U23303991) • Piero (piero_123aqp@hotmail.com)</small>
                 </div>
             </div>
         </div>
@@ -114,5 +169,6 @@
 
     <!-- Bootstrap 5.3 JS Bundle -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <ui:insert name="extraScripts"/>
 </h:body>
 </html>

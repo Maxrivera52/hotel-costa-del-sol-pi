@@ -1,0 +1,39 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="jakarta.faces.html"
+                xmlns:f="jakarta.faces.core"
+                xmlns:ui="jakarta.faces.facelets"
+                template="/WEB-INF/templates/layout.xhtml">
+
+    <ui:define name="title">Hotel Costa del Sol - Acceso Restringido (403)</ui:define>
+
+    <ui:define name="content">
+        <div class="row justify-content-center my-5">
+            <div class="col-md-7 col-lg-6">
+                <div class="card shadow border-0 rounded-4 text-center p-4">
+                    <div class="card-body">
+                        <div class="mb-3">
+                            <i class="bi bi-shield-exclamation text-danger" style="font-size: 4rem;"></i>
+                        </div>
+                        <span class="badge bg-danger px-3 py-1 mb-2">HTTP 403 — Seguridad RBAC</span>
+                        <h3 class="fw-bold text-dark mb-2">Acceso No Autorizado para su Rol</h3>
+                        <p class="text-muted mb-4">
+                            Su cuenta actual (<strong>#{loginBean.autenticado ? loginBean.usuarioLogueado.rolNombre : 'Visitante'}</strong>)
+                            no posee los privilegios requeridos para acceder a este módulo operativo.
+                            El filtro de seguridad perimetral (<code>SecurityFilter</code>) ha registrado el evento.
+                        </p>
+                        <div class="d-flex justify-content-center gap-2">
+                            <h:link outcome="index.xhtml" styleClass="btn btn-primary px-4 fw-semibold">
+                                <i class="bi bi-house-door me-1"></i> Volver al Inicio
+                            </h:link>
+                            <h:panelGroup rendered="#{loginBean.esCliente}">
+                                <h:link outcome="reservas.xhtml" styleClass="btn btn-warning px-4 fw-semibold text-dark">
+                                    <i class="bi bi-calendar2-check me-1"></i> Ir a Mis Reservas
+                                </h:link>
+                            </h:panelGroup>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </ui:define>
+</ui:composition>

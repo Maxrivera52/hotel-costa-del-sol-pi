@@ -2,6 +2,8 @@ package com.utp.hotelcostadelsol.bean;
 
 import com.utp.hotelcostadelsol.model.dto.HabitacionDTO;
 import com.utp.hotelcostadelsol.model.dto.TipoHabitacionDTO;
+import com.utp.hotelcostadelsol.model.dto.UsuarioDTO;
+import com.utp.hotelcostadelsol.security.Rol;
 import com.utp.hotelcostadelsol.service.ExcelExportService;
 import com.utp.hotelcostadelsol.service.HabitacionService;
 import com.utp.hotelcostadelsol.service.IReporteExportService;
@@ -23,7 +25,8 @@ import java.util.Map;
 
 /**
  * Managed Bean (@ViewScoped) para la gestion del inventario de habitaciones
- * y exportacion de reportes en formato Microsoft Excel (.xlsx) mediante Apache POI.
+ * y exportacion de reportes en formato Microsoft Excel (.xlsx) mediante Apache POI,
+ * aplicando restricciones de seguridad RBAC por rol.
  */
 @Named("habitacionBean")
 @ViewScoped
@@ -69,8 +72,14 @@ public class HabitacionBean implements Serializable {
 
     public void filtrar() {
         this.listaHabitaciones = habitacionService.listarPorFiltro(filtroEstado, filtroTipo);
-        FacesContext.getCurrentInstance().addMessage(null,
-            new FacesMessage(FacesMessage.SEVERITY_INFO, "Filtro aplicado", "Se encontraron " + listaHabitaciones.size() + " habitaciones."));
+        FacesContext fc = FacesContext.getCurrentInstance();
+        if (fc != null) {
+            fc.addMessage(null, new FacesMessage(
+                    FacesMessage.SEVERITY_INFO,
+                    "Filtro aplicado",
+                    "Se encontraron " + listaHabitaciones.size() + " habitaciones."
+            ));
+        }
     }
 
     public void limpiarFiltros() {
@@ -80,9 +89,12 @@ public class HabitacionBean implements Serializable {
     }
 
     public void guardarHabitacion() {
+        if (!tieneRolAdmin()) {
+            agregarMensajeError("Acceso Denegado (RBAC)", "Solo el rol Administrador puede registrar nuevas habitaciones.");
+            return;
+        }
         if (StringUtils.isBlank(nuevaHabitacion.getNumero())) {
-            FacesContext.getCurrentInstance().addMessage(null,
-                new FacesMessage(FacesMessage.SEVERITY_ERROR, "Validacion", "El numero de habitacion es obligatorio."));
+            agregarMensajeError("Validación", "El número de habitación es obligatorio.");
             return;
         }
 
@@ -95,26 +107,41 @@ public class HabitacionBean implements Serializable {
 
         boolean exito = habitacionService.registrarHabitacion(nuevaHabitacion);
         if (exito) {
-            FacesContext.getCurrentInstance().addMessage(null,
-                new FacesMessage(FacesMessage.SEVERITY_INFO, "Registro Exitoso", "Habitacion " + nuevaHabitacion.getNumero() + " guardada en base de datos."));
+            FacesContext fc = FacesContext.getCurrentInstance();
+            if (fc != null) {
+                fc.addMessage(null, new FacesMessage(
+                        FacesMessage.SEVERITY_INFO,
+                        "Registro Exitoso",
+                        "Habitación " + nuevaHabitacion.getNumero() + " guardada en base de datos."
+                ));
+            }
             this.nuevaHabitacion = new HabitacionDTO();
             this.nuevaHabitacion.setPrecioPorNoche(new BigDecimal("150.00"));
             this.nuevaHabitacion.setPiso(1);
             this.nuevaHabitacion.setIdTipo(1);
             cargarDatos();
         } else {
-            FacesContext.getCurrentInstance().addMessage(null,
-                new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "No se pudo registrar la habitacion."));
+            agregarMensajeError("Error", "No se pudo registrar la habitación.");
         }
     }
 
     public void cambiarEstado(HabitacionDTO hab, String nuevoEstado) {
+        if (!tieneRolPersonalOperativo()) {
+            agregarMensajeError("Acceso Denegado (RBAC)", "No cuenta con permisos para modificar el estado de las habitaciones.");
+            return;
+        }
         boolean ok = habitacionService.actualizarEstado(hab.getIdHabitacion(), nuevoEstado);
         if (ok) {
             hab.setEstado(nuevoEstado);
             cargarDatos();
-            FacesContext.getCurrentInstance().addMessage(null,
-                new FacesMessage(FacesMessage.SEVERITY_INFO, "Estado Actualizado", "Habitacion " + hab.getNumero() + " cambio a estado " + nuevoEstado));
+            FacesContext fc = FacesContext.getCurrentInstance();
+            if (fc != null) {
+                fc.addMessage(null, new FacesMessage(
+                        FacesMessage.SEVERITY_INFO,
+                        "Estado Actualizado",
+                        "Habitación " + hab.getNumero() + " cambió a estado " + nuevoEstado
+                ));
+            }
         }
     }
 
@@ -122,6 +149,10 @@ public class HabitacionBean implements Serializable {
      * Descarga el inventario actual de habitaciones en formato Excel (.xlsx) usando Apache POI.
      */
     public void exportarExcel() {
+        if (!tieneRolPersonalOperativo()) {
+            agregarMensajeError("Acceso Denegado (RBAC)", "Solo el personal autorizado puede exportar el inventario Excel.");
+            return;
+        }
         try {
             byte[] excelBytes = exportService.exportarInventarioHabitacionesExcel(listaHabitaciones);
             FacesContext fc = FacesContext.getCurrentInstance();
@@ -138,8 +169,42 @@ public class HabitacionBean implements Serializable {
             fc.responseComplete();
         } catch (Exception e) {
             LOGGER.error("Error al exportar Excel de habitaciones: {}", e.getMessage());
-            FacesContext.getCurrentInstance().addMessage(null,
-                new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error Apache POI", "No se pudo generar el archivo Excel."));
+            agregarMensajeError("Error Apache POI", "No se pudo generar el archivo Excel.");
+        }
+    }
+
+    private UsuarioDTO obtenerUsuarioSesion() {
+        FacesContext fc = FacesContext.getCurrentInstance();
+        if (fc == null || fc.getExternalContext() == null) {
+            return null;
+        }
+        Object user = fc.getExternalContext().getSessionMap().get(LoginBean.SESSION_USER_KEY);
+        return (user instanceof UsuarioDTO u) ? u : null;
+    }
+
+    private boolean tieneRolAdmin() {
+        UsuarioDTO u = obtenerUsuarioSesion();
+        if (u == null) {
+            return false;
+        }
+        return Rol.ROLE_ADMIN == Rol.fromCodigo(u.getRolCodigo()) || u.getIdRol() == Rol.ROLE_ADMIN.getIdRol();
+    }
+
+    private boolean tieneRolPersonalOperativo() {
+        UsuarioDTO u = obtenerUsuarioSesion();
+        if (u == null) {
+            return false;
+        }
+        Rol r = Rol.fromCodigo(u.getRolCodigo());
+        return r == Rol.ROLE_ADMIN || r == Rol.ROLE_RECEPCION
+                || u.getIdRol() == Rol.ROLE_ADMIN.getIdRol()
+                || u.getIdRol() == Rol.ROLE_RECEPCION.getIdRol();
+    }
+
+    private void agregarMensajeError(String resumen, String detalle) {
+        FacesContext fc = FacesContext.getCurrentInstance();
+        if (fc != null) {
+            fc.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, resumen, detalle));
         }
     }
 

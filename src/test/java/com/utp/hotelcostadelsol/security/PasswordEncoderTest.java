@@ -66,6 +66,7 @@ class PasswordEncoderTest {
     void shouldResolveRoleFromCode() {
         assertEquals(Rol.ROLE_ADMIN, Rol.fromCodigo("  role_admin "));
         assertEquals(Rol.ROLE_RECEPCION, Rol.fromCodigo("ROLE_RECEPCION"));
+        assertEquals(Rol.ROLE_CLIENTE, Rol.fromCodigo("ROLE_CLIENTE"));
         assertNull(Rol.fromCodigo(""));
         assertNull(Rol.fromCodigo("ROLE_INEXISTENTE"));
     }

@@ -5,6 +5,7 @@ import com.utp.hotelcostadelsol.model.dto.EstanciaDTO;
 import com.utp.hotelcostadelsol.model.dto.HabitacionDTO;
 import com.utp.hotelcostadelsol.model.dto.PagoDTO;
 import com.utp.hotelcostadelsol.model.dto.ReservaDTO;
+import com.utp.hotelcostadelsol.model.dto.UsuarioDTO;
 import com.utp.hotelcostadelsol.service.HabitacionService;
 import com.utp.hotelcostadelsol.service.RecepcionService;
 import com.utp.hotelcostadelsol.service.ReservaService;
@@ -89,7 +90,7 @@ public class RecepcionBean implements Serializable {
                     new FacesMessage(FacesMessage.SEVERITY_WARN, "Atención", "Seleccione una reserva y una habitación disponible."));
                 return;
             }
-            EstanciaDTO est = recepcionService.registrarCheckin(idReservaCheckin, idHabitacionCheckin, llaveAsignada, 2);
+            EstanciaDTO est = recepcionService.registrarCheckin(idReservaCheckin, idHabitacionCheckin, llaveAsignada, obtenerIdActor());
             FacesContext.getCurrentInstance().addMessage(null,
                 new FacesMessage(FacesMessage.SEVERITY_INFO, "Check-in Exitoso",
                     "Huésped instalado en habitación " + est.getNumeroHabitacion() + " con llave " + est.getLlaveAsignada()));
@@ -108,7 +109,7 @@ public class RecepcionBean implements Serializable {
                     new FacesMessage(FacesMessage.SEVERITY_WARN, "Atención", "Seleccione una estancia activa para realizar el Check-out."));
                 return;
             }
-            boolean ok = recepcionService.registrarCheckout(idReservaCheckout, consumosAdicionales, observacionesCheckout, 2);
+            boolean ok = recepcionService.registrarCheckout(idReservaCheckout, consumosAdicionales, observacionesCheckout, obtenerIdActor());
             if (ok) {
                 FacesContext.getCurrentInstance().addMessage(null,
                     new FacesMessage(FacesMessage.SEVERITY_INFO, "Check-out Finalizado",
@@ -130,7 +131,7 @@ public class RecepcionBean implements Serializable {
                     new FacesMessage(FacesMessage.SEVERITY_WARN, "Atención", "Seleccione una reserva para verificar su pago."));
                 return;
             }
-            PagoDTO pago = recepcionService.verificarPago(idReservaPago, montoPago, metodoPago, numeroOperacion, null, 2);
+            PagoDTO pago = recepcionService.verificarPago(idReservaPago, montoPago, metodoPago, numeroOperacion, null, obtenerIdActor());
             FacesContext.getCurrentInstance().addMessage(null,
                 new FacesMessage(FacesMessage.SEVERITY_INFO, "Pago Verificado",
                     "Comprobante registrado por S/ " + pago.getMonto() + " (" + pago.getMetodoPago() + ")"));
@@ -140,6 +141,17 @@ public class RecepcionBean implements Serializable {
             FacesContext.getCurrentInstance().addMessage(null,
                 new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error en Pago", e.getMessage()));
         }
+    }
+
+    private int obtenerIdActor() {
+        FacesContext fc = FacesContext.getCurrentInstance();
+        if (fc != null && fc.getExternalContext() != null) {
+            Object user = fc.getExternalContext().getSessionMap().get(LoginBean.SESSION_USER_KEY);
+            if (user instanceof UsuarioDTO u && u.getIdUsuario() > 0) {
+                return u.getIdUsuario();
+            }
+        }
+        return 2;
     }
 
     public List<ReservaDTO> getReservasParaCheckin() { return reservasParaCheckin; }

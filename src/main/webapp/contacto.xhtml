@@ -1,0 +1,108 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="jakarta.faces.html"
+                xmlns:f="jakarta.faces.core"
+                xmlns:ui="jakarta.faces.facelets"
+                template="/WEB-INF/templates/layout.xhtml">
+
+    <ui:define name="title">Hotel Wyndham Costa del Sol Chiclayo - Contacto</ui:define>
+
+    <ui:define name="extraHead">
+        <link rel="stylesheet" href="#{request.contextPath}/styles/contacto.css"/>
+    </ui:define>
+
+    <ui:define name="fullWidthContent">
+        <audio id="audioContacto" src="#{request.contextPath}/audio/musicadeinicio.mp3" loop="loop"></audio>
+
+        <main>
+            <!-- Hero Contacto -->
+            <section class="hero-contacto">
+                <h2>Descubre la mejor experiencia hotelera en Chiclayo</h2>
+                <video autoplay="autoplay" muted="muted" loop="loop" playsinline="playsinline">
+                    <source src="#{request.contextPath}/video/Hotel_Contacto.mp4" type="video/mp4"/>
+                </video>
+                <p>Contáctanos para resolver tus consultas o solicita una cotización personalizada. Nuestro equipo está a tu disposición las 24 horas del día.</p>
+            </section>
+
+            <!-- Formulario de Contacto / Pre-reserva -->
+            <section class="formulario">
+                <h2>Envíanos tu Consulta o Solicitud</h2>
+                <form id="formReserva" onsubmit="alert('¡Gracias por comunicarte con Hotel Wyndham Costa del Sol Chiclayo! Hemos recibido tu consulta.'); return false;">
+                    <fieldset>
+                        <legend>Datos personales</legend>
+                        <label for="nombre">Nombre completo:</label>
+                        <input type="text" id="nombre" name="nombre" placeholder="Tu nombre y apellido" required="required"/>
+
+                        <label for="email">Correo electrónico:</label>
+                        <input type="email" id="email" name="email" placeholder="correo@ejemplo.com" required="required"/>
+
+                        <label for="telefono">Celular / Teléfono:</label>
+                        <input type="tel" id="telefono" name="telefono" placeholder="999999999" required="required"/>
+                    </fieldset>
+
+                    <fieldset>
+                        <legend>Detalles de tu consulta o reserva</legend>
+                        <label for="habitacion">Tipo de habitación deseada:</label>
+                        <select id="habitacion" name="habitacion">
+                            <option value="">Selecciona una habitación (opcional)</option>
+                            <ui:repeat value="#{habitacionBean.listaTipos}" var="hab">
+                                <option value="#{hab.idTipo}">#{hab.nombre} - S/. #{hab.precioBaseNoche} / noche</option>
+                            </ui:repeat>
+                        </select>
+
+                        <label for="checkin">Fecha tentativa de check-in:</label>
+                        <input type="date" id="checkin" name="checkin"/>
+
+                        <label for="checkout">Fecha tentativa de check-out:</label>
+                        <input type="date" id="checkout" name="checkout"/>
+
+                        <label for="huespedes">Número estimado de huéspedes:</label>
+                        <input type="number" id="huespedes" name="huespedes" min="1" max="10" value="1"/>
+
+                        <label for="mensaje">Comentarios o requerimientos especiales:</label>
+                        <textarea id="mensaje" name="mensaje" rows="4"
+                                  placeholder="Ej: requerimiento de transporte, cama adicional, información de eventos, etc."></textarea>
+                    </fieldset>
+
+                    <div class="botones">
+                        <button type="submit" class="btn-reservar">Enviar Mensaje</button>
+                        <button type="reset" class="btn-limpiar">Limpiar formulario</button>
+                    </div>
+                </form>
+            </section>
+
+            <!-- Información de Contacto -->
+            <section class="info-contacto">
+                <h2>Información de Contacto y Atención</h2>
+                <table>
+                    <tbody>
+                        <tr>
+                            <th>Dirección</th>
+                            <td>Av. José Balta 399, Chiclayo – Lambayeque, Perú (frente a la Plaza de Armas)</td>
+                        </tr>
+                        <tr>
+                            <th>Central Telefónica</th>
+                            <td>+51 (74) 227272 &#160;|&#160; +51 (74) 227273</td>
+                        </tr>
+                        <tr>
+                            <th>Atención al Cliente</th>
+                            <td><a href="mailto:recepcionchiclayo@costadelsolperu.com" style="color: inherit;">recepcionchiclayo@costadelsolperu.com</a></td>
+                        </tr>
+                        <tr>
+                            <th>Reservas 24/7</th>
+                            <td>+51 957 474 382 &#160;|&#160; +51 979 349 803</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <div style="margin-top: 2rem; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.15);">
+                    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3331.601683307082!2d-79.83885760205305!3d-6.774184403253499!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x904ce93388987135%3A0x864c53b9ff79a625!2sWyndham%20Costa%20del%20Sol%20Chiclayo!5e0!3m2!1ses!2spe!4v1776908829883!5m2!1ses!2spe"
+                            width="100%" height="320" style="border:0;" allowfullscreen="allowfullscreen" loading="lazy"></iframe>
+                </div>
+            </section>
+        </main>
+    </ui:define>
+
+    <ui:define name="extraScripts">
+        <script src="#{request.contextPath}/Scripts/contacto.js"></script>
+    </ui:define>
+</ui:composition>

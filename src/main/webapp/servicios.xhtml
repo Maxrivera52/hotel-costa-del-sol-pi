@@ -1,0 +1,154 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="jakarta.faces.html"
+                xmlns:f="jakarta.faces.core"
+                xmlns:ui="jakarta.faces.facelets"
+                template="/WEB-INF/templates/layout.xhtml">
+
+    <ui:define name="title">Hotel Wyndham Costa del Sol Chiclayo - Servicios y Suites</ui:define>
+
+    <ui:define name="extraHead">
+        <link rel="stylesheet" href="#{request.contextPath}/styles/servicio.css"/>
+    </ui:define>
+
+    <ui:define name="fullWidthContent">
+        <audio id="audioServicio" src="#{request.contextPath}/audio/musicadeinicio.mp3" loop="loop"></audio>
+
+        <main>
+            <section class="hero-servicios">
+                <h2>Todo lo que necesitas para una estancia perfecta</h2>
+                <video autoplay="autoplay" muted="muted" loop="loop" playsinline="playsinline">
+                    <source src="#{request.contextPath}/video/Hotel_Servicios.mp4" type="video/mp4"/>
+                </video>
+                <p>Ofrecemos una amplia variedad de servicios para que te sientas como en casa, ya sea por negocios o placer. ¡Todo al alcance de tu mano!</p>
+                <p>Desde conectividad de alta velocidad hasta bienestar integral, soluciones prácticas para los viajeros más exigentes.</p>
+            </section>
+
+            <!-- Sección: Habitaciones y Suites -->
+            <section class="servicios-grid">
+                <h2>Nuestras Habitaciones y Suites</h2>
+                <div class="grid-container">
+                    <ui:repeat value="#{habitacionBean.listaTipos}" var="tipo">
+                        <article class="servicio-card">
+                            <img src="#{request.contextPath}/image/#{not empty tipo.imagenUrl ? tipo.imagenUrl : 'habitaciondeluxe.jpg'}"
+                                 alt="#{tipo.nombre}"/>
+                            <h3>#{tipo.nombre}</h3>
+                            <span class="precio">Desde S/. #{tipo.precioBaseNoche} / noche</span>
+                            <p>#{tipo.descripcion}</p>
+                            <p style="font-size:0.85rem; color:var(--gold,#c7a44b); margin-top:0.3rem;">
+                                Capacidad máxima: #{tipo.capacidadMaxima} personas
+                            </p>
+                        </article>
+                    </ui:repeat>
+                </div>
+            </section>
+
+            <!-- Sección: Servicios y Amenidades Adicionales -->
+            <section class="servicios-grid" style="padding-top: 1rem;">
+                <h2>Servicios y Amenidades Adicionales</h2>
+                <div class="grid-container">
+                    <article class="servicio-card">
+                        <img src="#{request.contextPath}/image/restaurant.png" alt="Restaurante Gourmet"/>
+                        <h3>Restaurante Gourmet</h3>
+                        <span class="precio">Desde S/. 80.00</span>
+                        <p>Buffet internacional y platos típicos preparados por los mejores chefs.</p>
+                    </article>
+                    <article class="servicio-card">
+                        <img src="#{request.contextPath}/image/spa.png" alt="Spa y Bienestar"/>
+                        <h3>Spa &amp; Bienestar</h3>
+                        <span class="precio">Desde S/. 150.00</span>
+                        <p>Masajes, sauna y tratamientos de relajación para renovar energías.</p>
+                    </article>
+                    <article class="servicio-card">
+                        <img src="#{request.contextPath}/image/Laptop.png" alt="Alquiler de laptops"/>
+                        <h3>Alquiler de laptops</h3>
+                        <span class="precio">Desde S/. 45.00 / día</span>
+                        <p>Laptops con Windows 11, Office y WiFi incluido. Ideal para viajeros de negocios.</p>
+                    </article>
+                    <article class="servicio-card">
+                        <img src="#{request.contextPath}/image/juntas.jpg" alt="Sala de juntas"/>
+                        <h3>Sala de juntas</h3>
+                        <span class="precio">Desde S/. 120.00 / hora</span>
+                        <p>Espacio equipado con proyector, pizarra, café y agua. Capacidad hasta 12 personas.</p>
+                    </article>
+                    <article class="servicio-card">
+                        <img src="#{request.contextPath}/image/lavanderia.jpg" alt="Lavandería y tintorería"/>
+                        <h3>Lavandería &amp; tintorería</h3>
+                        <span class="precio">Desde S/. 25.00 / prenda</span>
+                        <p>Lavado, secado y planchado express. Devolución en menos de 12 horas.</p>
+                    </article>
+                    <article class="servicio-card">
+                        <img src="#{request.contextPath}/image/traslado.png" alt="Traslado al aeropuerto"/>
+                        <h3>Traslado al aeropuerto</h3>
+                        <span class="precio">Desde S/. 65.00 / viaje</span>
+                        <p>Transporte privado ida o vuelta al aeropuerto internacional de Chiclayo.</p>
+                    </article>
+                </div>
+            </section>
+
+            <!-- Sección: Comparativa de Paquetes -->
+            <section class="tabla-paquetes">
+                <h2>Comparativa de Paquetes</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Servicio</th>
+                            <th>Paquete Básico</th>
+                            <th>Paquete Ejecutivo</th>
+                            <th>Paquete Premium</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Alquiler de laptop (1 día)</td>
+                            <td>No</td>
+                            <td>&#10003; (1 gratis)</td>
+                            <td>&#10003; (2 gratis)</td>
+                        </tr>
+                        <tr>
+                            <td>Sala de juntas (2h)</td>
+                            <td>No</td>
+                            <td>No</td>
+                            <td>&#10003;</td>
+                        </tr>
+                        <tr>
+                            <td>Lavandería (3 prendas)</td>
+                            <td>No</td>
+                            <td>&#10003;</td>
+                            <td>&#10003;</td>
+                        </tr>
+                        <tr>
+                            <td>Traslado aeropuerto</td>
+                            <td>No</td>
+                            <td>No</td>
+                            <td>&#10003;</td>
+                        </tr>
+                        <tr>
+                            <td>Spa (sesión 50 min)</td>
+                            <td>No</td>
+                            <td>No</td>
+                            <td>&#10003;</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Precio adicional por día</strong></td>
+                            <td>S/. 0 + habitación</td>
+                            <td>S/. 79 adicional</td>
+                            <td>S/. 199 adicional</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </section>
+
+            <!-- Video Institucional -->
+            <section class="video-atencion">
+                <h2>Así te atendemos en Wyndham Chiclayo</h2>
+                <video autoplay="autoplay" muted="muted" loop="loop" playsinline="playsinline">
+                    <source src="#{request.contextPath}/video/Hotel_Servicio1.mp4" type="video/mp4"/>
+                </video>
+            </section>
+        </main>
+    </ui:define>
+
+    <ui:define name="extraScripts">
+        <script src="#{request.contextPath}/Scripts/servicio.js"></script>
+    </ui:define>
+</ui:composition>
