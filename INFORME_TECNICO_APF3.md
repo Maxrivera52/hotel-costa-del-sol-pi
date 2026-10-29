@@ -148,14 +148,14 @@ El archivo relacional `schema_postgresql.sql` integra las siguientes tablas con 
 
 La gestión del repositorio en Git refleja el trabajo coordinado de los 4 integrantes del equipo a lo largo del ciclo académico (Semanas 1 a 12), habiendo redistribuido equitativamente las tareas de frontend y maquetación:
 
-### 7.1 Métricas de Contribución Globales (Total del Repositorio - 38 Commits)
-| Integrante | Rol en el Proyecto | Commits Totales | Porcentaje Total |
-| :--- | :--- | :---: | :---: |
-| **Max Joel Rivera Morán** (`U22242437`) | Líder de Proyecto, Database, Seguridad, TDD & Arquitectura Backend | **17** | **44.7%** |
-| **Miguel Ángel Suárez Perdomo** (`U23246385`) | Capa de Servicios de Negocio, Modelado DTO & Exportación POI | **10** | **26.3%** |
-| **Joel Vicente Cori Alarcón** (`U23303991`) | Persistencia DAO, Modelo Relacional, Prototipos UI & Vistas Facelets | **6** | **15.8%** |
-| **Piero** (`piero_123aqp@hotmail.com`) | Estilos CSS Corporativos, Plantilla Facelets, Vistas XHTML & Managed Beans | **5** | **13.2%** |
-| **Total General** | **Equipo de Desarrollo Completo** | **38** | **100%** |
+### 7.1 Métricas de Contribución Globales y Ramas por Integrante (44 Commits + Merges a `main`)
+| Integrante | Rama de Trabajo | Rol en el Proyecto | Commits Totales | Porcentaje Total |
+| :--- | :--- | :--- | :---: | :---: |
+| **Max Joel Rivera Morán** (`U22242437`) | `feature/max-rivera` | Líder de Proyecto, Database, Seguridad, TDD & Arquitectura Backend | **20** | **45.5%** |
+| **Miguel Ángel Suárez Perdomo** (`U23246385`) | `feature/miguel-suarez` | Capa de Servicios de Negocio, Modelado DTO & Exportación POI | **11** | **25.0%** |
+| **Joel Vicente Cori Alarcón** (`U23303991`) | `feature/joel-cori` | Persistencia DAO, Contratos SOLID, Prototipos UI & Vistas Facelets | **7** | **15.9%** |
+| **Piero** (`piero_123aqp@hotmail.com`) | `feature/piero` | Estilos CSS Corporativos, Plantilla Facelets, Vistas XHTML & Managed Beans | **6** | **13.6%** |
+| **Total General (`main`)** | **Todas las ramas integradas a `main`** | **Equipo de Desarrollo Completo** | **44** | **100%** |
 
 ### 7.2 Métricas de Contribución Específicas APF3 (Semanas 11 y 12 - 7 Commits)
 | Integrante | Rol en el Avance APF3 | Commits APF3 | % APF3 |

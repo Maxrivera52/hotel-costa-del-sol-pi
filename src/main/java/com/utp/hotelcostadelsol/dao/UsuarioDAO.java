@@ -25,8 +25,9 @@ public class UsuarioDAO {
 
     static {
         MOCK_USERS.put("admin", new UsuarioDTO(1, 1, "ROLE_ADMIN", "Administrador General", "admin", "Max Rivera Morán", "maxrivera938@gmail.com", "ACTIVO"));
-        MOCK_USERS.put("recepcion", new UsuarioDTO(2, 2, "ROLE_RECEPCION", "Recepcionista", "recepcion", "Miguel Ángel Suárez", "Miguelperdom543@gmail.com", "ACTIVO"));
-        MOCK_USERS.put("cliente", new UsuarioDTO(3, 3, "ROLE_CLIENTE", "Cliente Huésped", "cliente", "Neo Ventura Lorenzo", "nventtura420@gmail.com", "ACTIVO"));
+        MOCK_USERS.put("recepcion", new UsuarioDTO(2, 2, "ROLE_RECEPCION", "Recepcionista", "recepcion", "Miguel Ángel Suárez", "miguelperdom543@gmail.com", "ACTIVO"));
+        MOCK_USERS.put("cliente", new UsuarioDTO(3, 3, "ROLE_CLIENTE", "Cliente Huésped", "cliente", "Joel Cori Alarcón", "joelcori1996@gmail.com", "ACTIVO"));
+        MOCK_USERS.put("piero", new UsuarioDTO(4, 3, "ROLE_CLIENTE", "Cliente Huésped", "piero", "Piero", "piero_123aqp@hotmail.com", "ACTIVO"));
     }
 
     public Optional<UsuarioDTO> validarCredenciales(String username, String plainPassword) {

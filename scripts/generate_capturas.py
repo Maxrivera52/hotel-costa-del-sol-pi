@@ -857,7 +857,7 @@ html_02 = r"""<!DOCTYPE html>
         </div>
         <div class="col-md-6 text-md-end">
           <span class="d-block text-white fw-semibold mb-1">Integrantes del Equipo:</span>
-          <small class="d-block text-muted">Miguel Suárez Perdomo (U23246385) | Neo Ventura Lorenzo (U23245533) | Max Rivera Morán (U22242437)</small>
+          <small class="d-block text-muted">Miguel Suárez Perdomo (U23246385) | Joel Cori Alarcón (U23303991) | Max Rivera Morán (U22242437)</small>
         </div>
       </div>
     </div>
@@ -1023,7 +1023,7 @@ html_03 = r"""<!DOCTYPE html>
                   </div>
                   <div class="col-12 d-flex justify-content-between">
                     <span><strong>Cliente:</strong> <code>cliente</code> / <code>client123</code></span>
-                    <span class="badge bg-secondary">Neo Ventura (U23245533)</span>
+                    <span class="badge bg-secondary">Joel Cori (U23303991)</span>
                   </div>
                 </div>
               </div>
@@ -1198,7 +1198,7 @@ html_04 = r"""<!DOCTYPE html>
       <div class="alert alert-success d-flex align-items-center justify-content-between py-2 px-3 mb-3 shadow-sm border-success">
         <div class="d-flex align-items-center gap-2">
           <i class="bi bi-database-check fs-5 text-success"></i>
-          <span><strong>Conexión Activa a PostgreSQL:</strong> <code>jdbc:postgresql://localhost:5432/hotel_costa_del_sol</code> &bull; Pool HikariCP (10 conexiones activas).</span>
+          <span><strong>Conexión Activa a PostgreSQL:</strong> <code>jdbc:postgresql://localhost:5432/hotel_costa_sol_pi</code> &bull; Pool HikariCP (10 conexiones activas).</span>
         </div>
         <span class="badge bg-success">Status: OK</span>
       </div>
@@ -1562,7 +1562,7 @@ html_05 = r"""<!DOCTYPE html>
   }
   .av-max { background: linear-gradient(135deg, #1f6feb, #388bfd); }
   .av-miguel { background: linear-gradient(135deg, #238636, #2ea043); }
-  .av-neo { background: linear-gradient(135deg, #8957e5, #a371f7); }
+  .av-joel { background: linear-gradient(135deg, #8957e5, #a371f7); }
   
   /* Branch Filter */
   .branch-bar {
@@ -1738,10 +1738,10 @@ html_05 = r"""<!DOCTYPE html>
         </div>
 
         <div class="member-card">
-          <div class="avatar av-neo">NV</div>
+          <div class="avatar av-joel">JC</div>
           <div style="flex:1;">
-            <div style="font-weight:600; color:#e6edf3;">Neo Injante Ventura Lorenzo</div>
-            <div style="font-size:12px; color:#8b949e;">U23245533 &bull; 9 commits (30%)</div>
+            <div style="font-weight:600; color:#e6edf3;">Joel Vicente Cori Alarcón</div>
+            <div style="font-size:12px; color:#8b949e;">U23303991 &bull; 9 commits (30%)</div>
             <div style="font-size:11px; color:#d2a8ff;">Frontend UI, Facelets & Bootstrap 5</div>
           </div>
         </div>
@@ -1804,8 +1804,8 @@ html_05 = r"""<!DOCTYPE html>
           <div class="commit-left">
             <span class="commit-msg">style: finalizar ajustes de responsividad movil y documentacion en README</span>
             <div class="commit-meta">
-              <div class="avatar av-neo" style="width:20px; height:20px; font-size:10px;">NV</div>
-              <strong>Neo Ventura Lorenzo</strong> committed 2 days ago &bull; <code>nventtura420@gmail.com</code>
+              <div class="avatar av-joel" style="width:20px; height:20px; font-size:10px;">JC</div>
+              <strong>Joel Cori Alarcón</strong> committed 2 days ago &bull; <code>joelcori1996@gmail.com</code>
             </div>
           </div>
           <div class="commit-right">
@@ -1854,8 +1854,8 @@ html_05 = r"""<!DOCTYPE html>
           <div class="commit-left">
             <span class="commit-msg">ui: integrar formulario modal h:form para registro de habitaciones con feedback visual</span>
             <div class="commit-meta">
-              <div class="avatar av-neo" style="width:20px; height:20px; font-size:10px;">NV</div>
-              <strong>Neo Ventura Lorenzo</strong> committed 3 days ago &bull; <code>nventtura420@gmail.com</code>
+              <div class="avatar av-joel" style="width:20px; height:20px; font-size:10px;">JC</div>
+              <strong>Joel Cori Alarcón</strong> committed 3 days ago &bull; <code>joelcori1996@gmail.com</code>
             </div>
           </div>
           <div class="commit-right">

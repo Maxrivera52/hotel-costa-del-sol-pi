@@ -1,7 +1,7 @@
 -- ============================================================================
--- Base de Datos: hotel_costa_del_sol (PostgreSQL 15+)
+-- Base de Datos: hotel_costa_sol_pi (PostgreSQL 15+)
 -- Proyecto Integrador (PI)
--- Integrantes: Miguel Suarez, Neo Ventura, Max Rivera
+-- Integrantes: Max Rivera, Miguel Suarez, Joel Cori, Piero
 -- ============================================================================
 
 DROP TABLE IF EXISTS auditoria CASCADE;
@@ -115,7 +115,7 @@ CREATE TABLE auditoria (
 
 -- ============================================================================
 -- Datos Iniciales (Seed Data)
--- Passwords: 'admin123' / 'recep123' / 'client123' (BCrypt 12 rounds)
+-- Passwords: 'admin123' / 'recep123' / 'client123' / 'piero123' (BCrypt 12 rounds)
 -- ============================================================================
 INSERT INTO roles (codigo, nombre) VALUES
 ('ROLE_ADMIN', 'Administrador General'),
@@ -123,9 +123,10 @@ INSERT INTO roles (codigo, nombre) VALUES
 ('ROLE_CLIENTE', 'Cliente Huesped');
 
 INSERT INTO usuarios (id_rol, username, password_hash, nombre_completo, email, telefono, estado) VALUES
-(1, 'admin', '$2a$12$vVp8PZeqoK9N9z3rFkM00.N07H26yT3e7o5y0iH1UuE3kF0QxRjfe', 'Max Rivera Moran', 'maxrivera938@gmail.com', '987654321', 'ACTIVO'),
-(2, 'recepcion', '$2a$12$2oE50l7m7Fk2W/jA9zY1U.1QzM77qC9T4e8y1iH2VuF4lG1RySkfe', 'Miguel Angel Suarez', 'Miguelperdom543@gmail.com', '987654322', 'ACTIVO'),
-(3, 'cliente', '$2a$12$9aD10k2n3Ej5V/iB8xX0T.0PyL66pB8S3d7x0hG0UtE2jE9QxRjfe', 'Neo Ventura Lorenzo', 'nventtura420@gmail.com', '987654323', 'ACTIVO');
+(1, 'admin', '$2a$12$lbJ4rIsfdo7x4DvPQvKRtuPcAf4xUwbQCy.MRHCVH9Lpb3UjBYnzu', 'Max Rivera Moran', 'maxrivera938@gmail.com', '987654321', 'ACTIVO'),
+(2, 'recepcion', '$2a$12$IzaoiZyWJSkwjKrfsH7h.u5ljPnAPJVVmqrSNyIUDyZQG/rWDCdUi', 'Miguel Angel Suarez', 'miguelperdom543@gmail.com', '987654322', 'ACTIVO'),
+(3, 'cliente', '$2a$12$LCVwpwOsLhVFDkt1IpyAhOZ34FsB9BDFxqJ4nwwxRAWlzmD6Cmc5y', 'Joel Cori Alarcon', 'joelcori1996@gmail.com', '987654323', 'ACTIVO'),
+(3, 'piero', '$2a$12$2LEtn59gvfQI.0MTevJflur/7FcG3Rc0XZ7aXtmEAmRWni7/11AvC', 'Piero', 'piero_123aqp@hotmail.com', '987654324', 'ACTIVO');
 
 INSERT INTO tipos_habitacion (codigo, nombre, descripcion, precio_base_noche, capacidad_maxima, imagen_url) VALUES
 ('simple', 'Habitacion Simple Confort', 'Ideal para viajeros individuales y estadias de negocios ejecutivas.', 120.00, 1, 'habitacionstandar.png'),
@@ -147,9 +148,9 @@ INSERT INTO habitaciones (id_tipo, numero, piso, estado, precio_por_noche, obser
 
 INSERT INTO reservas (codigo_reserva, id_cliente, id_tipo_habitacion, id_habitacion, fecha_checkin, fecha_checkout, numero_huespedes, solicita_factura, comentarios, precio_alojamiento, precio_servicios_extra, monto_total, estado, origen) VALUES
 ('WYN-2026-A102BC', 3, 1, 2, CURRENT_DATE - 1, CURRENT_DATE + 1, 1, TRUE, 'Viaje corporativo ejecutivo', 240.00, 0.00, 240.00, 'CHECK_IN', 'WEB'),
-('WYN-2026-D401EF', 3, 4, 7, CURRENT_DATE, CURRENT_DATE + 3, 2, TRUE, 'Aniversario con vista panoramica', 960.00, 80.00, 1040.00, 'CHECK_IN', 'RECEPCION'),
+('WYN-2026-D401EF', 4, 4, 7, CURRENT_DATE, CURRENT_DATE + 3, 2, TRUE, 'Aniversario con vista panoramica', 960.00, 80.00, 1040.00, 'CHECK_IN', 'RECEPCION'),
 ('WYN-2026-P201GH', 3, 2, 3, CURRENT_DATE + 2, CURRENT_DATE + 5, 2, FALSE, 'Llegada en vuelo nocturno', 540.00, 0.00, 540.00, 'CONFIRMADA', 'WEB'),
-('WYN-2026-X501JK', 3, 5, NULL, CURRENT_DATE + 4, CURRENT_DATE + 6, 3, TRUE, 'Requiere recojo aeropuerto', 1100.00, 120.00, 1220.00, 'PENDIENTE', 'WEB');
+('WYN-2026-X501JK', 4, 5, NULL, CURRENT_DATE + 4, CURRENT_DATE + 6, 3, TRUE, 'Requiere recojo aeropuerto', 1100.00, 120.00, 1220.00, 'PENDIENTE', 'WEB');
 
 INSERT INTO estancias (id_reserva, llave_asignada, consumos_adicionales, observaciones, id_recepcionista_checkin) VALUES
 (1, 'KEY-RFID-102A', 35.00, 'Huesped instalado sin novedades', 2),
